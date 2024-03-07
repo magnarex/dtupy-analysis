@@ -1,0 +1,2 @@
+class Meta(object):
+    pass

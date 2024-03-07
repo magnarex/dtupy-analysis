@@ -1,0 +1,59 @@
+{
+    "filters" : {
+        "Drop" : {
+            "default" : {
+                "cols" : ["EventNr", "GEO","hit","channel","sl","layer","cell","DriftTime"]
+            }
+        },
+        
+        "DropTrigger" : {
+            "default" : {}
+        },
+
+        "SLStudy" : {
+            "01_4hits_in" : {
+                "sl" : 1,
+                "f" : "4hits_in"
+            },
+            "02_4hits_in" : {
+                "sl" : 2,
+                "f" : "4hits_in"
+            },
+            "03_4hits_in" : {
+                "sl" : 3,
+                "f" : "4hits_in"
+            },
+            "04_4hits_in" : {
+                "sl" : 4,
+                "f" : "4hits_in"
+            },
+            "4hits_ex" : {
+                "sl" : "all",
+                "f" : "4hits_ex"
+            },
+            "01_3n4hits" : {
+                "sl" : 1,
+                "f" : "3n4hits"
+            },
+            "02_3n4hits" : {
+                "sl" : 2,
+                "f" : "3n4hits"
+            },
+            "03_3n4hits" : {
+                "sl" : 3,
+                "f" : "3n4hits"
+            },
+            "04_3n4hits" : {
+                "sl" : 4,
+                "f" : "3n4hits"
+            }
+        },
+
+        "TimeFrame" : {
+            "default" : {
+                "tmin" : 600,
+                "tmax" : 1200
+            }
+        }
+    }
+}

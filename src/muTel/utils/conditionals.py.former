@@ -1,0 +1,58 @@
+from muTel.utils.meta import superlayers, layers
+import pandas as pd
+import numpy as np
+import logging
+from IPython.display import display
+
+
+def f_4hits(target,sl):
+    df = target.df
+    # target va a ser un df con las columnas EventNr, layer y sl
+    # por lo menos.
+    check_set = superlayers - set([sl])
+    mask = pd.DataFrame({},index=np.unique(df['EventNr']))
+
+    for c_sl in check_set:
+        logging.info(f'Estudiando SL {c_sl}')
+        checkup = df.copy()
+        checkup = checkup[checkup['sl'] == c_sl].drop('sl',axis=1)
+        mask[c_sl] = checkup.groupby('EventNr').apply(lambda grp: set(grp.layer) == layers)
+
+    mask = mask.fillna(False)
+
+    return mask
+
+def mask2idx(target,mask):
+    df = target.df
+    eventnr = mask[mask==True].index.values
+    idx = np.isin(df.index.values,eventnr)
+    return idx
+
+
+
+def f_4hits_inclusive(target,sl):
+    # target va a ser un df con las columnas EventNr, layer y sl
+    # por lo menos.
+    df = target.df
+    mask = f_4hits(target,sl).sum(axis=1).astype(bool)
+    # display(mask)
+
+    return df[mask2idx(target,mask)]
+
+    
+def f_4hits_exclusive(target,sl):
+    # target va a ser un df con las columnas EventNr, layer y sl
+    # por lo menos.
+    df = target.df
+    mask = f_4hits(target,sl).prod(axis=1).astype(bool)
+    # display(mask)
+
+    return df[mask2idx(target,mask)]
+
+
+
+f_dict = {
+    '4hits_in' : f_4hits_inclusive,
+    '4hits_ex' : f_4hits_exclusive
+
+}

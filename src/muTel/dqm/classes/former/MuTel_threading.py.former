@@ -1,0 +1,244 @@
+import threading
+import logging
+import sys
+
+
+from muTel.dqm.classes.MuRecon import MuRecon, SLRecon
+from muTel.dqm.classes.MuData import MuData
+
+from functools import wraps
+
+class MuTelType(type):
+    def __repr__(self):
+        return self.__name__
+
+class MuTel(object,metaclass=MuTelType):
+    """
+    Una clase que representa el telescopio entero.
+
+    Attributes
+    ----------
+    - data : muTel.dqm.classes.MuData
+        Medidas del detector que se quieren reconstruir. Cuando se le asigna un valor,
+        crea cada una de las superlayers.
+    
+    - sl : dict(int : muTel.dqm.classes.SLRecon)
+        Diccionario que contiene todos los superlayers del telescopio. Se le puede asignar
+        una lista para crear las superlayers indicadas.
+    
+    - fit_4hits : bool
+        Valor que indica si debe ajustar las trazas de 4 hits.
+    
+    - fit_3hits : bool
+        Valor que indica si debe ajustar las trazas de 3 hits.
+
+        
+    Methods
+    -------
+    - fit_traces:
+        
+    """
+
+
+
+
+    def __init__(self, data : MuData, sl = [1,2,3,4],debug=False):
+        self.___logger = logging.Logger('MuTel')
+        self.___logger.addHandler(logging.StreamHandler(sys.stdout))
+
+        if debug: self.___logger.setLevel(logging.DEBUG)
+        #_______
+        # LOCKS
+        #‾‾‾‾‾‾‾
+        # self.
+        # self._fits_lock = threading.Lock()
+        
+        #___________________________________
+        # INICIALIZACIÓN DE LAS SUPERLAYERS
+        #‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+        self.data = data
+        self.sl = sl
+
+        #_________________________________
+        # CONFIGURACIÓN DEL AJUSTE
+        #‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+        self.fit_4hits = True
+        self.fit_3hits = True
+
+    #=====================================================================
+    # DECORADOR PARA DAR VALORES CON THREADS
+    #=====================================================================
+   
+    
+    def threadsetter(attr_name : str):
+
+        def decorator(func):
+
+            @wraps(func)
+            def _set_attr(self, lock, bar, key, *args, **kwargs):
+                func_eval = func(self,*args,**kwargs)
+
+                with lock:
+                    self.___logger.debug(f'Actualizando diccionario {attr_name} con la key {key}...')
+                    local_value = getattr(self, attr_name)
+                    local_value[key] = func_eval
+                    setattr(self,f'_{attr_name}',local_value)
+
+                self.___logger.debug(f'Llegando a la barrera con la key {key}')
+                bar.wait()
+
+                return 
+            
+            return _set_attr
+        
+        return decorator
+
+
+
+
+    #=====================================================================
+    # ASIGNACIÓN DE LOS DATOS
+    #=====================================================================
+
+    @property
+    def data(self):
+        return self._data
+    
+    @data.setter
+    def data(self,val):
+        self.___logger.
+        self._data = val
+        if hasattr(self,'_sl'):
+            self.sl = self._sl.keys()
+    
+
+    #=====================================================================
+    # CREACIÓN DE LAS SUPERLAYERS
+    #=====================================================================
+    @property
+    def sl(self):
+        return self._sl
+    
+    @sl.setter
+    def sl(self, val : list):
+        self._sl = {}
+
+        bar = threading.Barrier(len(val))
+        lock = threading.Lock()
+        threads = {}
+
+        for sl_i in val:
+            self.___logger.debug(f'Iniciando thread SL{sl_i}_setter')
+            sl_thread = threading.Thread(
+                target = self._set_sl, name = f'SL{sl_i}_setter',
+                kwargs = dict(
+                    sl      = sl_i,
+                    bar     = bar,
+                    lock    = lock,
+                    key     = sl_i
+                )
+            )
+            threads[sl_i] = sl_thread
+            sl_thread.start()
+
+        bar.wait()
+        self.___logger.debug('Se ha roto la barrera del sl.setter')
+        return
+    
+    @threadsetter('sl')
+    def _set_sl(self, sl : int):
+        self.___logger.debug(f'Creando MuRecon de la SL{sl}')
+        return MuRecon.from_SL(self.data,sl)
+
+
+
+    #=====================================================================
+    # CONFIGURACIÓN DEL AJUSTE DE LAS TRAZAS
+    #=====================================================================
+    
+    @property
+    def fit_4hits(self):
+        return self._fit_4hits
+    @fit_4hits.setter
+    def fit_4hits(self,val):
+        if isinstance(val,bool):
+            self._fit_4hits = val
+        else:
+            raise TypeError(f'Sólo pueden usarse valores booleanos y esto es {type(val)}')
+
+    @property
+    def fit_3hits(self):
+        return self._fit_3hits
+    @fit_4hits.setter
+    def fit_3hits(self,val):
+        if isinstance(val,bool):
+            self._fit_3hits = val
+        else:
+            raise TypeError(f'Sólo pueden usarse valores booleanos y esto es {type(val)}')
+
+    #=====================================================================
+    # AJUSTE DE LAS TRAZAS
+    #=====================================================================
+
+
+    @property
+    def fits(self):
+        if not hasattr(self,'_fits'):
+            self.fit_traces(n4 = self.fit_4hits, n3 = self.fit_3hits)
+        return self._fits
+            
+    
+    def fit_traces(self):
+        self._fits = {}
+
+        bar = threading.Barrier(len(self.sl))
+        lock = threading.Lock()
+        threads = {}
+        
+        
+
+        # TODO: Creo que podría difinir un decorador con estos bucles, pero no corre prisa
+        for sl_i, recon_i in self.sl.items():
+            self.___logger.debug(f'Iniciando thread SL{sl_i}_setter')
+            sl_thread = threading.Thread(
+                target = self._set_sl, name = f'SL{sl_i}_setter',
+                kwargs = dict(
+                    recon   = recon_i,
+                    barrier = sl_bar,
+                    lock    = sl_lock
+                )
+            )
+            sl_threads[sl_i] = sl_thread
+            sl_thread.start()
+
+        sl_bar.wait()
+        self.___logger.debug('Se ha roto la barrera del sl.setter')
+        return
+
+
+    def _set_fits(self, recon : SLRecon, lock : threading.Lock, bar : threading.Barrier):
+        sl = recon.sl
+        fits = recon.fit_traces(n4 = self.fit_4hits, n3 = self.fit_3hits)
+        self.___logger.debug(f'Ajustanto trazas de la SL{sl}')
+
+        with self._fits_lock:
+            self.___logger.debug(f'Actualizando diccionario fits con SL{sl}...')
+            local_fits = self.sl
+            local_fits[sl] = fits
+            self._fits = local_fits
+        self.___logger.debug(f'Llegando a la barrera con SL{sl}')
+        self._sl_bar.wait()
+
+
+    
+
+
+
+if __name__ == '__main__':
+    data = MuData(588).clean()
+    data.calc_T0(T0_corr=0.19)
+    tel = MuTel(data)
+    print(tel.sl)
+    print(tel.data)
+
+

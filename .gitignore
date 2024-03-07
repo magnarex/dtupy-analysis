@@ -1,0 +1,10 @@
+.vscode
+figs
+logs
+test
+data
+dev
+*.pyc
+tutorials
+tmp
+demo

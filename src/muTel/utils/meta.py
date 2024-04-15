@@ -37,11 +37,11 @@ wire_height = cell_height*np.r_[1.5,0.5,-0.5,-1.5]
 # layer_offset = -cell_width*np.array((0,0.5,0,0.5))  # (l1,l2,l3,l4)
 layer_offset = -cell_width*np.array((0.5,0,0.5,0))  # (l4,l3,l2,l1)   # Hace que el mínimo de x de la layer 4 sea 0
 
-with open(f'{parent}/src/muTel/dqm/config/pattern.json','r') as file:
-    patt_dict = json.load(file)
+# with open(f'{parent}/src/muTel/dqm/config/muTel/pattern.json','r') as file:
+#     patt_dict = json.load(file)
 
-with open(f'{parent}/src/muTel/dqm/config/laterality.json','r') as file:
-    lat_dict = json.load(file)
+# with open(f'{parent}/src/muTel/dqm/config/muTel/laterality.json','r') as file:
+#     lat_dict = json.load(file)
 
 all_lats = list(map(lambda x: ''.join(x), itertools.product('LR',repeat=len(layers))))
 

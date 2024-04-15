@@ -211,7 +211,7 @@ class MuData(object,metaclass=MuDataType):
             raise TypeError(f"Wrong type for {type(eventnr)} in '__getitem__'. Only 'int' or '(tuple | list | set)' are allowed.")
         
         
-        if not self.data.EventNr.isin(event_list).compute().any():      
+        if not self.data[['EventNr']].isin(event_list).values.any().compute():      
             raise ValueError(f'El evento {eventnr} no existe.')
 
         
@@ -338,9 +338,8 @@ class MuData(object,metaclass=MuDataType):
         ddf = dd.read_parquet(
             path,
             engine='pyarrow',
-            index="__null_dask_index__",
             calculate_divisions=True
-        ).drop('chamber', axis = 'columns') #Sólo hay una cámara, no aporta información
+        )
 
         meta = pq.read_table(path).schema.metadata
 
@@ -427,21 +426,23 @@ class MuData(object,metaclass=MuDataType):
         - self : muTel.dqm.classes.MuData
             Devuelve el propio objeto
         '''
-        return data[data.channel != 0].astype(meta.data_type_dict)             
+        return data[data.channel != 0].astype(meta.data_type_dict).persist()         
 
     def repartition(self, npartitions = 10):
 
-        ddf = self.ddf
+        return self.ddf.repartition(npartitions=npartitions)
+        # # FIX: This used to work in previous versions, now it doesn't
+        # ddf = self.ddf
 
-        max_enr = ddf.EventNr.max()
-        divs_enr = np.floor(np.arange(npartitions+1)/npartitions*max_enr).astype(np.int32)
+        # max_enr = ddf.EventNr.max()
+        # divs_enr = np.floor(np.arange(npartitions+1)/npartitions*max_enr).astype(np.int32)
 
-        divs_idx = list(map(lambda x: ddf.index.compute()[ddf.EventNr==x].min(), divs_enr))  
-        divs_idx[0] = ddf.divisions[0]
-        divs_idx[-1] = ddf.divisions[-1]
+        # divs_idx = list(map(lambda x: ddf.where(ddf.EventNr == x).dropna().index.min().compute(), divs_enr))  
 
+        # divs_idx[0] = ddf.compute_current_divisions()[0]
+        # divs_idx[-1] = ddf.compute_current_divisions()[-1]
 
-        return ddf.repartition(divisions=tuple(divs_idx))
+        # return ddf.repartition(divisions=tuple(divs_idx))
 
     #=====================================================================
     # PROPIEDADES
@@ -500,7 +501,7 @@ class MuData(object,metaclass=MuDataType):
         if self.ddf is None:
             raise AttributeError('No se puede asignar número de particiones porque no es un DataFrame de Dask.')
         else:
-            self._data = self.repartition(value)
+            self._data = self.repartition(value).persist()
         
 
     @property

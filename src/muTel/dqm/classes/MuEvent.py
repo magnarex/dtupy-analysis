@@ -137,13 +137,14 @@ class MuEvent(object, metaclass = MuEventType):
         return MuEvent.find_muses_static(MuEvent.pair_hits_static(event))
 
     @classmethod
-    def from_data(cls, event_data, run = None, date = None, do_pairs = False, do_muses = False, debug= False):
+    def from_data(cls, event_data, run = None, date = None, do_pairs = False, do_muses = False, do_fit = False, debug= False):
         event = MuEvent(data = event_data, run = run, date = date, debug=debug)
 
         if not isinstance(event_data, pd.DataFrame): print(f'WARNING: No es pandas.DataFrame, es un {type(event_data)}')
 
-        if do_pairs or do_muses: event = MuEvent.pair_hits_static(event, debug=debug)
-        if do_muses: event = MuEvent.find_muses_static(event,debug=debug)
+        if do_pairs or do_muses or do_fit: event = MuEvent.pair_hits_static(event, debug=debug)
+        if do_muses or do_fit: event = MuEvent.find_muses_static(event,debug=debug)
+        if do_fit: event = MuEvent.fit_muses_static(event,debug=debug)
 
         return event
     
@@ -365,7 +366,6 @@ class MuEvent(object, metaclass = MuEventType):
         # Calculamos unas pseudo-distancias en hits y celdas.
         hit_diff = np.r_[hits_layer_j.hit] - np.c_[hits_layer_i.hit]
         cell_diff = np.r_[hits_layer_j.cell] - np.c_[hits_layer_i.cell]
-        if debug: print(f'Distancia en hits:\n {hit_diff}\nDistancia en celdas:\n {cell_diff}')
         
 
 
@@ -377,6 +377,7 @@ class MuEvent(object, metaclass = MuEventType):
             else:
                 cell_diff = cell_diff - 0.5
             
+        if debug: print(f'Distancia en hits:\n {hit_diff}\nDistancia en celdas:\n {cell_diff}')
 
         # Miramos los hits que son en celdas contiguas.
         is_cont   = np.where(np.abs(cell_diff) <= layer_sep/2)
@@ -624,9 +625,19 @@ class MuEvent(object, metaclass = MuEventType):
 
 
 
+    def fit_muses(self,vdrift=55e-3):
+        for muse in self.all_muses:
+            muse.fit(vdrift=vdrift)
 
+    @classmethod
+    def from_musedata(cls, muse_data, do_fit = False):
+        event = cls(muse_data)
 
-
+        reidx_df = muse_data.set_index(['sl','MuSEId'])
+        for sl, muse_id in reidx_df.index.unique():
+            df = reidx_df.loc[sl,muse_id].reset_index()
+            event._muses[sl] = event._muses[sl] + [MuSE.from_musedata(df, do_fit=do_fit)]
+        return event
 
 
 

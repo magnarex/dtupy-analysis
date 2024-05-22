@@ -11,11 +11,9 @@ def get_src():
 parent_directory = get_src()
 data_directory   = parent_directory / pathlib.Path('data')
 config_directory = parent_directory / pathlib.Path('cfg')
-macros_directory = parent_directory / pathlib.Path('macros')
-condor_directory = parent_directory / pathlib.Path('condor')
 
 
-def is_valid(path, debug = False):
+def is_valid(path):
     if isinstance(path,str):
         path = pathlib.Path(path)
     elif isinstance(path, pathlib.Path):
@@ -27,7 +25,7 @@ def is_valid(path, debug = False):
         return True
     else:
         try:
-            if debug: print(f'Trying to touch {path}')
+            print(f'Trying to touch {path}')
             path.touch()
             path.unlink()
             return True

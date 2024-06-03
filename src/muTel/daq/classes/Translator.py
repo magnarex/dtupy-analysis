@@ -1,5 +1,5 @@
 from muTel.utils.doc import is_documented_by
-from muTel.utils.paths import load_yaml, config_directory
+from muTel.utils.paths import load_yaml, config_directory, get_file, data_directory
 
 from collections.abc import Iterable
 from pathlib import Path
@@ -7,15 +7,15 @@ import itertools
 from copy import deepcopy
 import pyarrow as pa
 import pyarrow.parquet as pq
-from alive_progress import alive_bar
 
 
 
 
 class Language(object):
-    def __init__(self, fields = {}):
+    def __init__(self, id = 'default', fields = {}, schema = None):
         self._fields = fields
-
+        self._id     = id
+        self._schema = schema
     # =================================
     # OBJECT ATTRIBUTES
     # =================================
@@ -27,7 +27,18 @@ class Language(object):
         Mapping of the fields in (mask, right_shift) format for Translator's parse method.
         """
         return self._fields
-    
+    @property
+    def id(self):
+        """
+        Shortened name to refer to this language.
+        """
+        return self._id
+    @property
+    def schema(self) -> 'None | dict[str,str]':
+        """
+        Dictionary containing the data types of the fields.
+        """
+        return self._schema
     # =================================
     # OBJECT METHODS
     # =================================
@@ -105,13 +116,31 @@ class Italian(Language):
         'tdc'       : (0b11111,   20),    # TDC
         'link'      : (0xF,       60)     # LINK
     }
+    _default_schema = {
+        'channel'   : 'uint8',    # CHANNEL
+        'bx'        : 'uint16',   # BX
+        'tdc'       : 'uint8',    # TDC
+        'link'      : 'uint8'     # LINK
+    }
     
     def __init__(self):
-        super().__init__(self._default_fields)
+        super().__init__('it', Italian._default_fields, Italian._default_schema)
 
 class Translator(object):
-    def __init__(self, language, mapping_path):
+    _default_schema = {
+        'index'     : 'uint64',
+        'station'   : 'int8',
+        'sl'        : 'uint8',
+        'layer'     : 'uint8',
+        'cell'      : 'uint8'
+    }
+    @staticmethod
+    def parse_schema(schema):
+        return pa.schema([(field, eval(f'pa.{dtype}()')) for field, dtype in sorted(schema.items())])
+    
+    def __init__(self, language : Language, mapping_path):
         self._language = language
+        self._cfg_name = Path(mapping_path).stem
         self._cfg = load_yaml(mapping_path, config_directory / Path('daq/mapping'))
         self._valid_links = {link : set(obdt.keys()) for link, obdt in self._cfg['connectors'].items()}
         # self._translator[link][channel] = [station, sl, layer, cell]
@@ -120,17 +149,28 @@ class Translator(object):
         
         
         self._buffer = {
+            'index'     : [],
             'station'   : [],
             'sl'        : [],
             'layer'     : [],
             'cell'      : [], 
+        } | {
+            field_name  : []
+            for field_name in language.fields.keys()
         }
-        self._buffer = self._buffer | {field_name : [] for field_name in language.fields.keys()}
+        self._buffer = dict(sorted(self._buffer.items()))
+        
         self._empty_buffer = deepcopy(self._buffer)
         self._buffer_size = 0
         
+        if language.schema:
+            self._schema = Translator.parse_schema(self._default_schema | language.schema)
+        else:
+            self._schema = None
+            
         self._pqwriter = None
         self._output_path = None
+            
         
         
     def reset_buffer(self):
@@ -151,34 +191,60 @@ class Translator(object):
                 
         self._translator =  translator
     
-    def translate(self, src_path, out_path, max_buffer = 1e5):
-        with open(src_path, "rb") as f:
-            nentries = sum(1 for _ in f)
-        
-        self._output_path = out_path
-        
-        with open(src_path, 'r') as file, alive_bar(nentries,refresh_secs=.1) as bar:
-            for line in file:
-                try:
-                    fields = self.translate_word(int(line))
-                    
-                    self.update_buffer(fields)
-                    
-                    bar()
-                    if self._buffer_size > max_buffer: self.dump_buffer()
+    def translate(self, src_path, out_path, max_buffer = 1e5, debug = False):
+        if Path(src_path).suffix == '':
+            src_path = get_file(src_path, data_directory, ['.txt'])
+        else:
+            src_path = get_file(src_path, data_directory)
+            
+        out_path = get_file(out_path, data_directory, ['.parquet'])
+        self._output_path = Path(out_path)
 
-                except KeyboardInterrupt:
-                    break
-                except KeyError:
-                    bar()
-                    continue
-                except Exception as err:
-                    print(self.buffer)
-                    raise err
+        if self._schema: self._pqwriter = pq.ParquetWriter(self.output_path, self._schema)
+        
+        if debug:
+            from alive_progress import alive_bar
+            
+            print('Getting number of entries...',end=' ')
+            with open(src_path, "rb") as f:
+                nentries = sum(1 for _ in f)
+            print('Success!')
 
+            with open(src_path, 'r') as file, alive_bar(nentries) as bar:
+                self.main_loop(file,max_buffer=max_buffer,bar=bar)
+        else:
+            with open(src_path, 'r') as file:
+                self.main_loop(file,max_buffer=max_buffer)
+            
         self.pqwriter.close()
         self._pqwriter = None
-        
+    
+    def main_loop(self, file, max_buffer, bar = None):
+        print('Entering translator loop...')
+
+        for i, line in enumerate(file):
+            try:
+                fields = self.translate_word(int(line)) | {'index' : i}
+                
+                self.update_buffer(fields)
+                
+                if self._buffer_size == max_buffer: self.dump_buffer()
+                
+                del line
+            except KeyboardInterrupt:
+                self.dump_buffer()
+                return False, i
+            except KeyError as err:
+                continue
+            except Exception as err:
+                print(self.buffer)
+                raise err
+            finally:
+                if bar: bar()
+                
+        self.dump_buffer()
+        return True, i
+    
     def translate_word(self,word):
         fields = self.language(word)
         
@@ -196,10 +262,11 @@ class Translator(object):
         return True
     
     def dump_buffer(self):
+        print(f'Dumping {self._buffer_size} lines...')
         table = pa.Table.from_pydict(self.buffer)
+        if self._schema: table = table.cast(self._schema)
         if not self.pqwriter: self._pqwriter = pq.ParquetWriter(self.output_path, table.schema)
         self.pqwriter.write_table(table)
-    
         self.reset_buffer()
     
     
@@ -208,7 +275,7 @@ class Translator(object):
         return cls(Italian(),mapping_path)
     
     @property
-    def language(self):
+    def language(self) -> Language:
         return self._language
     @property
     def buffer(self):
@@ -220,13 +287,20 @@ class Translator(object):
     def pqwriter(self):
         return self._pqwriter
     @property
-    def output_path(self):
+    def output_path(self) -> Path:
         return self._output_path
+    @property
+    def cfg_name(self) -> str:
+        return self._cfg_name
 if __name__ == '__main__':
     lang = Italian()
     print(lang(5764607523173461363))
+    print(lang(11529215049700534640))
     
-    sxa_path = '/afs/ciemat.es/user/m/martialc/public/muTel_v4/muTel/data/sxa5_data.txt'
-    out_path = '/afs/ciemat.es/user/m/martialc/public/muTel_v4/muTel/data/test.parquet'
-    transr = Translator.from_it('sxa5')
+    # exit()
+    # sxa_path = '/afs/ciemat.es/user/m/martialc/public/muTel_v4/muTel/data/sxa5_data.txt'
+    # out_path = '/afs/ciemat.es/user/m/martialc/public/muTel_v4/muTel/data/sxa5_data.parquet'
+    sxa_path = '/afs/cern.ch/user/r/redondo/work/public/sxa5/testpulse_theta_2.txt'
+    out_path = '/afs/ciemat.es/user/m/martialc/public/muTel_v4/muTel/data/testpulse_theta_2.parquet'
+    transr = Translator.from_it('testpulse_theta_2')
     transr.translate(sxa_path, out_path, max_buffer=1e5)

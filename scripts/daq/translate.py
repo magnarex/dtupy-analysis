@@ -43,7 +43,7 @@ args = parser.parse_args()
 
 
 # Importing muTel package from anywhere
-parent = '/'.join(__file__.split('/')[:-3])
+parent = '/'.join(__file__.split('/')[:-3]) # porque está tres niveles por debajo de la carpeta de instalación
 loc = parent+'/src/muTel/__init__.py'
 src = 'muTel'
 spec = importlib.util.spec_from_file_location(src, loc)

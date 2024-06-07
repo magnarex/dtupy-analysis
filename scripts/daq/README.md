@@ -32,6 +32,6 @@ python translate.py -l it\
 ```
 This example takes the data taken with the slow control box test shared by Ignacio in `/afs/cern.ch/user/r/redondo/work/public/sxa5/testpulse_theta_2.txt` with an OBDT configured in the file `.../cfg/mapping/testpulse_theta_2.yaml` and translates from `it` (Italian) and stores the tabular dataset in `.../data/test.parquet`.
 
-> # Tip: Partial translation!
+> ### Tip: Partial translation!
 > The program may be exited at any point of the loop raising a `KeyboardInterrupt` excpection (i.e., pressing `Ctrl+C`). This will be handled properly and the file will be saved up to the point of the interruption. This is useful if one wants to produce a partial translation on a reduced portion of the data.
 

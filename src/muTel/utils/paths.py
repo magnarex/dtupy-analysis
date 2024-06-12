@@ -35,28 +35,28 @@ def is_valid(path, debug = False):
             print(f"Can't touch {path}: {e}")
             return False
 
-def get_with_default(path,default_dir):
+def get_with_default(path,default_dir,debug=False):
     if default_dir:
-        if is_valid(default_dir / path):
+        if is_valid(default_dir / path,debug=debug):
             return default_dir / path
         
-    if is_valid(path):
+    if is_valid(path,debug=debug):
         return path
     else:
         return None
 
        
-def get_file(path, default_dir = None, suffix = None):
+def get_file(path, default_dir = None, suffix = None, debug=False):
     path = pathlib.Path(path)    
     
     if suffix is None:
-        return get_with_default(path,default_dir)
+        return get_with_default(path,default_dir,debug=debug)
     elif isinstance(suffix, str):
-        return get_with_default(path.with_suffix(suffix), default_dir)
+        return get_with_default(path.with_suffix(suffix), default_dir,debug=debug)
         raise ValueError(f"Can't find a file with name {path}{suffix}!")
     elif isinstance(suffix, Iterable):
         for sfx_i in suffix:
-            path = get_with_default(path.with_suffix(sfx_i), default_dir)
+            path = get_with_default(path.with_suffix(sfx_i), default_dir,debug=debug)
             if path.exists(): return path
             
         raise ValueError(f"Can't find a file with name {path} and extension in {suffix}!")

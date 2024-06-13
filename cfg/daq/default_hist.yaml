@@ -1,0 +1,41 @@
+tdc:
+  bins  : 32
+  range : [0, 32]
+  label : TDC, {col} (arb. uts.)
+
+bx:
+  bins    : 4096
+  range   : [0, 4096]
+  label   : Bunch crossing, {col} (arb. uts.)
+  figsize : [9, 6]
+
+
+layer:
+  bins  : 4
+  range : [1, 5]
+  label : Layer, {col}
+
+cell:
+  bins  : 52
+  range : [0, 52]
+  label : Cell, {col}
+
+channel:
+  bins  : 256
+  range : [0, 256]
+  label : Channel, {col}
+
+link:
+  bins  : 16
+  range : [0, 16]
+  label : Link OBDT, {col}
+
+sl:
+  bins  : 4
+  range : [1, 5]
+  label : Superlayer, {col}
+
+station:
+  bins  : null
+  range : null
+  label : Station, {col}

@@ -166,7 +166,7 @@ class Translator(object):
         self._lines_failed = 0
         
         if language.schema:
-            self._schema = Translator.parse_schema({self._default_schema, **language.schema**})
+            self._schema = Translator.parse_schema(dict(**self._default_schema, **language.schema))
         else:
             self._schema = None
             
@@ -190,7 +190,7 @@ class Translator(object):
                 # Station Superlayer Layer Cell
                 sslc = [[station, sl, *wl[::-1]] for wl in list(itertools.product(cfg['cells'][sl_ctr], cfg['layers']))]
                 translator[link].update(dict(zip(cfg['obdt'][obdt][obdt_ctr],sslc)))
-                
+
         self._translator =  translator
     
     def translate(self, src_path, out_path, max_buffer = 1e5, debug = False):
@@ -233,7 +233,8 @@ class Translator(object):
         try:
             for i, line in enumerate(file):
                 try:
-                    fields = self.translate_word(int(line)).update({'index' : i})
+                    fields = self.translate_word(int(line))
+                    fields['index'] = i
                     
                     self.update_buffer(fields)
                     

@@ -162,9 +162,11 @@ class Translator(object):
         
         self._empty_buffer = deepcopy(self._buffer)
         self._buffer_size = 0
+        self._lines_read = 0
+        self._lines_failed = 0
         
         if language.schema:
-            self._schema = Translator.parse_schema(dict(**self._default_schema, **language.schema))
+            self._schema = Translator.parse_schema({self._default_schema, **language.schema**})
         else:
             self._schema = None
             
@@ -193,7 +195,7 @@ class Translator(object):
     
     def translate(self, src_path, out_path, max_buffer = 1e5, debug = False):
         if Path(src_path).suffix == '':
-            src_path = get_file(src_path, data_directory, ['.txt'])
+            src_path = get_file(src_path, data_directory, ['.txt'], debug=True)
         else:
             src_path = get_file(src_path, data_directory)
             
@@ -205,43 +207,51 @@ class Translator(object):
         if debug:
             from alive_progress import alive_bar
             
-            print('Getting number of entries...',end=' ')
-            with open(src_path, "rb") as f:
-                nentries = sum(1 for _ in f)
-            print('Success!')
+            # print('Getting number of entries...',end=' ')
+            # with open(src_path, "rb") as f:
+            #     nentries = sum(1 for _ in f)
+            # print('Success!')
 
-            with open(src_path, 'r') as file, alive_bar(nentries) as bar:
+            with open(src_path, 'r') as file, alive_bar() as bar:
                 self.main_loop(file,max_buffer=max_buffer,bar=bar)
         else:
             with open(src_path, 'r') as file:
                 self.main_loop(file,max_buffer=max_buffer)
-            
+        
+        print('\nLines processed: {read:10d} / {total:<10d} ({ratio:6.2f}%)'.format(
+            read    = self._lines_read                          ,
+            total   = self._lines_read  + self._lines_failed    ,
+            ratio  = self._lines_read/(self._lines_read  + self._lines_failed)*100  ,
+        ))
+        
+        
         self.pqwriter.close()
         self._pqwriter = None
     
     def main_loop(self, file, max_buffer, bar = None):
         print('Entering translator loop...')
-
-        for i, line in enumerate(file):
-            try:
-                fields = dict(**self.translate_word(int(line)), **{'index' : i})
-                
-                self.update_buffer(fields)
-                
-                if self._buffer_size == max_buffer: self.dump_buffer()
-                
-                del line
-            except KeyboardInterrupt:
-                self.dump_buffer()
-                return False, i
-            except KeyError as err:
-                continue
-            except Exception as err:
-                print(self.buffer)
-                raise err
-            finally:
-                if bar: bar()
-                
+        try:
+            for i, line in enumerate(file):
+                try:
+                    fields = self.translate_word(int(line)).update({'index' : i})
+                    
+                    self.update_buffer(fields)
+                    
+                    if self._buffer_size == max_buffer: self.dump_buffer()
+                    
+                    del line
+                except KeyError as err:
+                    self._lines_failed += 1
+                    continue
+                except Exception as err:
+                    print(self.buffer)
+                    raise err
+                finally:
+                    if bar: bar()
+        except KeyboardInterrupt:
+            self.dump_buffer()
+            return False, i
+            
         self.dump_buffer()
         return True, i
     
@@ -264,9 +274,11 @@ class Translator(object):
     def dump_buffer(self):
         print(f'Dumping {self._buffer_size} lines...')
         table = pa.Table.from_pydict(self.buffer)
+        _size = table.num_rows
         if self._schema: table = table.cast(self._schema)
         if not self.pqwriter: self._pqwriter = pq.ParquetWriter(self.output_path, table.schema)
         self.pqwriter.write_table(table)
+        self._lines_read += _size
         self.reset_buffer()
     
     

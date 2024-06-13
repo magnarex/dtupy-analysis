@@ -1,7 +1,7 @@
 import importlib.util
 import sys
 import argparse
-
+from pathlib import Path
 
 parser = argparse.ArgumentParser(description="Translate a file from lines of bytes to a tabular format (.parquet).")
 parser.add_argument('--src'         , 
@@ -43,7 +43,7 @@ args = parser.parse_args()
 
 
 # Importing muTel package from anywhere
-parent = '/'.join(__file__.split('/')[:-3]) # porque está tres niveles por debajo de la carpeta de instalación
+parent = '/'.join(str(Path(__file__).resolve()).split('/')[:-3]) # porque está tres niveles por debajo de la carpeta de instalación
 loc = parent+'/src/muTel/__init__.py'
 src = 'muTel'
 spec = importlib.util.spec_from_file_location(src, loc)

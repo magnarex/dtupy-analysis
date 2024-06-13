@@ -1,5 +1,5 @@
 from muTel.utils.doc import is_documented_by
-from muTel.utils.paths import load_yaml, config_directory, get_file, data_directory
+from muTel.utils.paths import load_yaml, config_directory, get_file, data_directory, get_with_default
 
 from collections.abc import Iterable
 from pathlib import Path
@@ -148,23 +148,23 @@ class Translator(object):
         
         
         
-        self._buffer = {
+        self._buffer = dict(**{
             'index'     : [],
             'station'   : [],
             'sl'        : [],
             'layer'     : [],
             'cell'      : [], 
-        } | {
+        }, **{
             field_name  : []
             for field_name in language.fields.keys()
-        }
+        })
         self._buffer = dict(sorted(self._buffer.items()))
         
         self._empty_buffer = deepcopy(self._buffer)
         self._buffer_size = 0
         
         if language.schema:
-            self._schema = Translator.parse_schema(self._default_schema | language.schema)
+            self._schema = Translator.parse_schema(dict(**self._default_schema, **language.schema))
         else:
             self._schema = None
             
@@ -187,7 +187,7 @@ class Translator(object):
             for obdt_ctr, (station, sl, sl_ctr) in cfg['connectors'][link].items():
                 # Station Superlayer Layer Cell
                 sslc = [[station, sl, *wl[::-1]] for wl in list(itertools.product(cfg['cells'][sl_ctr], cfg['layers']))]
-                translator[link] = translator[link] | dict(zip(cfg['obdt'][obdt][obdt_ctr],sslc))
+                translator[link].update(dict(zip(cfg['obdt'][obdt][obdt_ctr],sslc)))
                 
         self._translator =  translator
     
@@ -197,7 +197,7 @@ class Translator(object):
         else:
             src_path = get_file(src_path, data_directory)
             
-        out_path = get_file(out_path, data_directory, ['.parquet'])
+        out_path = get_with_default(Path(out_path).with_suffix('.parquet'), data_directory)
         self._output_path = Path(out_path)
 
         if self._schema: self._pqwriter = pq.ParquetWriter(self.output_path, self._schema)
@@ -224,7 +224,7 @@ class Translator(object):
 
         for i, line in enumerate(file):
             try:
-                fields = self.translate_word(int(line)) | {'index' : i}
+                fields = dict(**self.translate_word(int(line)), **{'index' : i})
                 
                 self.update_buffer(fields)
                 
@@ -249,7 +249,7 @@ class Translator(object):
         fields = self.language(word)
         
         sllc   = dict(zip(['station', 'sl', 'layer', 'cell'], self.lookup_sllc(fields)))
-        return fields | sllc
+        return dict(**fields, **sllc)
     
     def lookup_sllc(self,fields):
         return self._translator[fields['link']][fields['channel']]

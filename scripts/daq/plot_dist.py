@@ -1,17 +1,24 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import pandas as pd
 import matplotlib.pyplot as plt
 =======
+=======
+>>>>>>> cd7ff81b9f591768977cc27777949b747be49a37
 """
 Use this script to plot a series of standard plots that will provide useful insight
 into the status and performance of the readout electronics and processing of raw
 data.
 """
+<<<<<<< HEAD
 >>>>>>> First local commit
+=======
+>>>>>>> cd7ff81b9f591768977cc27777949b747be49a37
 from pathlib import Path
 import importlib.util
 import sys
 import argparse
+<<<<<<< HEAD
 <<<<<<< HEAD
 import numpy as np
 
@@ -46,6 +53,8 @@ args = parser.parse_args()
 # Importing muTel package from anywhere
 parent = '/'.join(__file__.split('/')[:-3]) # porque está tres niveles por debajo de la carpeta de instalación
 =======
+=======
+>>>>>>> cd7ff81b9f591768977cc27777949b747be49a37
 import itertools
 
 import pandas as pd
@@ -57,7 +66,10 @@ import numpy.random as random
 
 # Importing muTel package from anywhere
 parent = '/'.join(str(Path(__file__).resolve()).split('/')[:-3]) # porque está tres niveles por debajo de la carpeta de instalación
+<<<<<<< HEAD
 >>>>>>> First local commit
+=======
+>>>>>>> cd7ff81b9f591768977cc27777949b747be49a37
 loc = parent+'/src/muTel/__init__.py'
 src = 'muTel'
 spec = importlib.util.spec_from_file_location(src, loc)
@@ -65,6 +77,7 @@ foo = importlib.util.module_from_spec(spec)
 sys.modules[src] = foo
 spec.loader.exec_module(foo)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 from muTel.utils.paths import data_directory, get_file, load_yaml, config_directory
 
@@ -174,6 +187,8 @@ if ('channel' in cols) & ('tdc' in cols):
 
 print('\n')
 =======
+=======
+>>>>>>> cd7ff81b9f591768977cc27777949b747be49a37
 import muTel.daqplotlib.plots  as daq_plots
 import muTel.daqplotlib.config as daq_config
 from   muTel.utils.paths import (
@@ -284,4 +299,7 @@ if __name__ == '__main__':
     )
 
     main(**parser.parse_args())
+<<<<<<< HEAD
 >>>>>>> First local commit
+=======
+>>>>>>> cd7ff81b9f591768977cc27777949b747be49a37

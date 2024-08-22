@@ -1,0 +1,25 @@
+default:
+  1:
+    preset      : SN
+    z0          : 210   # mm
+    vdrift      : 0.055 # 55e-3 mm/ns
+    default_t0  : 710
+
+  2:
+    preset      : EW
+    z0          : 155   # mm
+    vdrift      : 0.055 # 55e-3 mm/ns
+    default_t0  : 710
+
+  3:
+    preset      : SN
+    z0          : -155  # mm
+    vdrift      : 0.055 # 55e-3 mm/ns
+    default_t0  : 710
+
+  4: 
+    preset      : EW
+    z0          : -210  # mm
+    vdrift      : 0.055 # 55e-3 mm/ns
+    default_t0  : 710
+

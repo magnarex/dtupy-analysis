@@ -1,13 +1,6 @@
 import pathlib, inspect
 from collections.abc import Iterable
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 from typing import Any
->>>>>>> First local commit
-=======
-from typing import Any
->>>>>>> cd7ff81b9f591768977cc27777949b747be49a37
 import yaml
 
 here = pathlib.Path(inspect.getfile(inspect.currentframe())).parent
@@ -78,19 +71,9 @@ def get_yaml(path, default_dir = None):
 def get_root(path, default_dir = None):
     return get_file(path,default_dir,'.root') 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-def load_yaml(path, default_dir = None):
-=======
 def load_yaml(path, default_dir = None) -> dict[str, Any]:
     """Read .yaml file and import it as a dictionary.
     """
->>>>>>> First local commit
-=======
-def load_yaml(path, default_dir = None) -> dict[str, Any]:
-    """Read .yaml file and import it as a dictionary.
-    """
->>>>>>> cd7ff81b9f591768977cc27777949b747be49a37
     path = get_yaml(path, default_dir)
     
     with open(path,'r') as file:

@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> cd7ff81b9f591768977cc27777949b747be49a37
 """
 ==============================
 Data Acquisition (DAQ) Library
@@ -67,8 +62,4 @@ link        ``uint8``   60              0xF
 
 """
 
-<<<<<<< HEAD
->>>>>>> First local commit
-=======
->>>>>>> cd7ff81b9f591768977cc27777949b747be49a37
 from .classes.Translator import *

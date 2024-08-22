@@ -1,5 +1,6 @@
 import pathlib, inspect
 from collections.abc import Iterable
+from typing import Any
 import yaml
 
 here = pathlib.Path(inspect.getfile(inspect.currentframe())).parent
@@ -70,7 +71,9 @@ def get_yaml(path, default_dir = None):
 def get_root(path, default_dir = None):
     return get_file(path,default_dir,'.root') 
 
-def load_yaml(path, default_dir = None):
+def load_yaml(path, default_dir = None) -> dict[str, Any]:
+    """Read .yaml file and import it as a dictionary.
+    """
     path = get_yaml(path, default_dir)
     
     with open(path,'r') as file:

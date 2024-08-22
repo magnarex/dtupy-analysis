@@ -25,9 +25,14 @@ By default, the parser will first check `.../data/{src}` (in case the `src` has 
 
 ### Example
 ```bash
+<<<<<<< HEAD
 python translate.py -l it\
     --src /afs/cern.ch/user/r/redondo/work/public/sxa5/testpulse_theta_2.txt\
     --out test\
+=======
+python translate.py /afs/cern.ch/user/r/redondo/work/public/sxa5/testpulse_theta_2.txt test\
+    -l it\
+>>>>>>> First local commit
     --cfg testpulse_theta_2
 ```
 This example takes the data taken with the slow control box test shared by Ignacio in `/afs/cern.ch/user/r/redondo/work/public/sxa5/testpulse_theta_2.txt` with an OBDT configured in the file `.../cfg/mapping/testpulse_theta_2.yaml` and translates from `it` (Italian) and stores the tabular dataset in `.../data/test.parquet`.

@@ -60,12 +60,16 @@ layers: [4, 2, 3, 1]
 
 links:
   10: theta
+<<<<<<< HEAD
   # 2: phi
   # 5: theta
+=======
+>>>>>>> First local commit
 
 connectors:
   10 :
       m : [2, 1, '7A']
+<<<<<<< HEAD
       n : [2, 3, '7A']
 
     # 5 :
@@ -86,3 +90,6 @@ connectors:
     # 2 :
     #     o: [1, 1, 4B]
 
+=======
+      n : [2, 3, '7A']
+>>>>>>> First local commit

@@ -12,3 +12,5 @@ tutorials
 dev/dqm/models
 **/.ipynb_checkpoints
 *.swp
+src/hep_utils
+test

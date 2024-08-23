@@ -15,7 +15,7 @@ function
 ----------------------- -------------------------------------
 `hist`                  `Hist`
 `hist2d`                `Hist2D`, `BX2D`, `TDCTime2D`
-======================= ===========================================
+======================= =====================================
 
 All these classes are derived from `CMSPlot` which is itself a subclass of `Plot`.
 

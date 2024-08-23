@@ -6,16 +6,7 @@ class Config:
     """
     This is a wrapper for a `dict` whose values may be accessed as if the keys were also
     attributes.
-    
-    Attributes
-    ----------
-    cfg : dict [str, Any]
-        Source dictionary used to create the instance.
-    values : dict_values [str, Any]
-        Proxy for `cfg.values()`
-    keys : dict_keys [str, Any]
-        Proxy for `cfg.keys()`
-    
+        
     Methods
     -------
     get(key, default=None)

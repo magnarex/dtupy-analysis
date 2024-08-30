@@ -6,12 +6,7 @@ class Config:
     """
     This is a wrapper for a `dict` whose values may be accessed as if the keys were also
     attributes.
-        
-    Methods
-    -------
-    get(key, default=None)
-        Proxy for `cfg.get`(key, default)
-    
+            
     Note
     ----
     Items in `cfg` may also be accessed as ``Config.<key>`` or ``Config[<key>]`` or using
@@ -57,7 +52,7 @@ class Config:
     
     def get(self, key, default = None):
         """
-        Gets an the value of `key` with `default` as default. Wrapper for `cfg.get`.
+        Gets an the value of `key` with `default` as default. Wrapper for `cfg.get`\.
         
         Parameters
         ----------
@@ -142,9 +137,6 @@ class PlotConfig(Config):
     subclasses). Its a subclass of ``Config`` where each item in the `cfg` attribute
     is a ``FieldConfig`` instance.
     
-    Methods
-    -------
-    from_yaml   
     """
     
     def __init__(self, cfg : 'dict[str, dict[str, ]]'):

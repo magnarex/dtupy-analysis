@@ -1,0 +1,12 @@
+# This package is built for python>=3.9 (since it uses the pipe "|" operator for merging dicts)
+
+# Standard scientific packages that are used in this project
+numpy
+pandas
+matplotlib
+
+# Apache table format (.parquet)
+pyarrow
+
+# For debugging
+alive_progress [test]

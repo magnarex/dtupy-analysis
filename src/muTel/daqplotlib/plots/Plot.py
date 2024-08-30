@@ -11,22 +11,7 @@ from ..config import PlotConfig
 class Plot:
     """
     A class used to represent a Plot using the `matplotlib` library.
-    
-    Attributes
-    ----------
-    fig : `~matplotlib.figure.Figure`
-        The Figure instance in which the Plot is drawn.
-    ax : `~matplotlib.axes.Axes`
-        The Axes instance in which the Plot is drawn.
-    data : `~pandas.DataFrame` or `~panda.Series`
-        A set of data that will be used by the `plot` method to draw the plot.
-    plot_cfg : `muTel.daqplotlib.config.PlotConfig`
-        A default configuration for drawing the plots.
-    
-    Methods
-    -------
-    plot(data, *args, **kwargs)
-        Draw the given plot in the Figure's Axis.
+        
     """
     
     def __init__(self,
@@ -156,24 +141,6 @@ class CMSPlot(Plot):
     A subclass of `muTel.daqplotlib.plots.Plot` that provides support for the recommended
     CMS style using the package `~mplhep`.
     
-    Attributes
-    ----------
-    fig : `~matplotlib.figure.Figure`
-        The Figure instance in which the Plot is drawn.
-    ax : `~matplotlib.axes.Axes`
-        The Axes instance in which the Plot is drawn.
-    data : `~pandas.DataFrame` or `~panda.Series`
-        A set of data that will be used by the `plot` method to draw the plot.
-    plot_cfg : `muTel.daqplotlib.config.PlotConfig`
-        A default configuration for drawing the plots.
-    cms_kwargs : `dict`
-        A dictionary containing all the parameters for the CMS styling methods
-        used by the constructor or otherwise.
-    
-    Methods
-    -------
-    plot(data, *args, **kwargs)
-        Draw the given plot in the Figure's Axis.
     """
 
     def __init__(self,

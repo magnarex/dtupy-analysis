@@ -8,9 +8,9 @@ import pyarrow.parquet as pq
 from muTel.utils.docs import is_documented_by
 from muTel.utils.paths import load_yaml, config_directory, get_file, data_directory, get_with_default
 from ..utils.parsing import obdt2int
+from collections.abc import Iterable
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
     import io
     import pathlib
     import pyarrow

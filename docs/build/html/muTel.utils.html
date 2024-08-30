@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>muTel.utils package &mdash; muTel  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="muTel.daqplotlib.plots package" href="muTel.daqplotlib.plots.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="modules.html" class="icon icon-home">
+            muTel
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="muTel.html">muTel package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="muTel.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="muTel.daq.html">muTel.daq package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="muTel.daqplotlib.html">muTel.daqplotlib package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">muTel.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-muTel.utils.conditionals">muTel.utils.conditionals module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-muTel.utils.config">muTel.utils.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-muTel.utils.data">muTel.utils.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-muTel.utils.docs">muTel.utils.docs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-muTel.utils.logging">muTel.utils.logging module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-muTel.utils.meta">muTel.utils.meta module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-muTel.utils.paths">muTel.utils.paths module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-muTel.utils.threading">muTel.utils.threading module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-muTel.utils.tools">muTel.utils.tools module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-muTel.utils.units">muTel.utils.units module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-muTel.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="muTel.html#module-muTel">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="modules.html">muTel</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="modules.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="muTel.html">muTel package</a></li>
+      <li class="breadcrumb-item active">muTel.utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/muTel.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mutel-utils-package">
+<h1>muTel.utils package<a class="headerlink" href="#mutel-utils-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-muTel.utils.conditionals">
+<span id="mutel-utils-conditionals-module"></span><h2>muTel.utils.conditionals module<a class="headerlink" href="#module-muTel.utils.conditionals" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.conditionals.f_3hits">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.conditionals.</span></span><span class="sig-name descname"><span class="pre">f_3hits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.conditionals.f_3hits" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.conditionals.f_3n4hits">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.conditionals.</span></span><span class="sig-name descname"><span class="pre">f_3n4hits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sl</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.conditionals.f_3n4hits" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.conditionals.f_4hits">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.conditionals.</span></span><span class="sig-name descname"><span class="pre">f_4hits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.conditionals.f_4hits" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.conditionals.f_4hits_exclusive">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.conditionals.</span></span><span class="sig-name descname"><span class="pre">f_4hits_exclusive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sl</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.conditionals.f_4hits_exclusive" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.conditionals.f_4hits_inclusive">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.conditionals.</span></span><span class="sig-name descname"><span class="pre">f_4hits_inclusive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sl</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.conditionals.f_4hits_inclusive" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-muTel.utils.config">
+<span id="mutel-utils-config-module"></span><h2>muTel.utils.config module<a class="headerlink" href="#module-muTel.utils.config" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.config.gen_lat_json">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.config.</span></span><span class="sig-name descname"><span class="pre">gen_lat_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.config.gen_lat_json" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.config.load_cfg">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.config.</span></span><span class="sig-name descname"><span class="pre">load_cfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.config.load_cfg" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.config.update_cfg_path">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.config.</span></span><span class="sig-name descname"><span class="pre">update_cfg_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.config.update_cfg_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-muTel.utils.data">
+<span id="mutel-utils-data-module"></span><h2>muTel.utils.data module<a class="headerlink" href="#module-muTel.utils.data" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.data.display_df">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.data.</span></span><span class="sig-name descname"><span class="pre">display_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.data.display_df" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.data.read_muon">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.data.</span></span><span class="sig-name descname"><span class="pre">read_muon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nhits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.data.read_muon" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-muTel.utils.docs">
+<span id="mutel-utils-docs-module"></span><h2>muTel.utils.docs module<a class="headerlink" href="#module-muTel.utils.docs" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.docs.is_documented_by">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.docs.</span></span><span class="sig-name descname"><span class="pre">is_documented_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">original</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.docs.is_documented_by" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-muTel.utils.logging">
+<span id="mutel-utils-logging-module"></span><h2>muTel.utils.logging module<a class="headerlink" href="#module-muTel.utils.logging" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.logging.begin_log">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.logging.</span></span><span class="sig-name descname"><span class="pre">begin_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parentdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.logging.begin_log" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-muTel.utils.meta">
+<span id="mutel-utils-meta-module"></span><h2>muTel.utils.meta module<a class="headerlink" href="#module-muTel.utils.meta" title="Link to this heading"></a></h2>
+</section>
+<section id="module-muTel.utils.paths">
+<span id="mutel-utils-paths-module"></span><h2>muTel.utils.paths module<a class="headerlink" href="#module-muTel.utils.paths" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.paths.get_file">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.paths.</span></span><span class="sig-name descname"><span class="pre">get_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.paths.get_file" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.paths.get_root">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.paths.</span></span><span class="sig-name descname"><span class="pre">get_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.paths.get_root" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.paths.get_src">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.paths.</span></span><span class="sig-name descname"><span class="pre">get_src</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.paths.get_src" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.paths.get_with_default">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.paths.</span></span><span class="sig-name descname"><span class="pre">get_with_default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.paths.get_with_default" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.paths.get_yaml">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.paths.</span></span><span class="sig-name descname"><span class="pre">get_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.paths.get_yaml" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.paths.is_valid">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.paths.</span></span><span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.paths.is_valid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.paths.load_yaml">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.paths.</span></span><span class="sig-name descname"><span class="pre">load_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#muTel.utils.paths.load_yaml" title="Link to this definition"></a></dt>
+<dd><p>Read .yaml file and import it as a dictionary.</p>
+</dd></dl>
+
+</section>
+<section id="module-muTel.utils.threading">
+<span id="mutel-utils-threading-module"></span><h2>muTel.utils.threading module<a class="headerlink" href="#module-muTel.utils.threading" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="muTel.utils.threading.SLThread">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muTel.utils.threading.</span></span><span class="sig-name descname"><span class="pre">SLThread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.threading.SLThread" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Thread</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="muTel.utils.threading.SLThread.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.threading.SLThread.run" title="Link to this definition"></a></dt>
+<dd><p>Method representing the thread’s activity.</p>
+<p>You may override this method in a subclass. The standard run() method
+invokes the callable object passed to the object’s constructor as the
+target argument, if any, with sequential and keyword arguments taken
+from the args and kwargs arguments, respectively.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.threading.ThreadLoop">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.threading.</span></span><span class="sig-name descname"><span class="pre">ThreadLoop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Thread'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.threading.ThreadLoop" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-muTel.utils.tools">
+<span id="mutel-utils-tools-module"></span><h2>muTel.utils.tools module<a class="headerlink" href="#module-muTel.utils.tools" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="muTel.utils.tools.flatten_dict">
+<span class="sig-prename descclassname"><span class="pre">muTel.utils.tools.</span></span><span class="sig-name descname"><span class="pre">flatten_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableMapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.tools.flatten_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-muTel.utils.units">
+<span id="mutel-utils-units-module"></span><h2>muTel.utils.units module<a class="headerlink" href="#module-muTel.utils.units" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="muTel.utils.units.Distance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muTel.utils.units.</span></span><span class="sig-name descname"><span class="pre">Distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.units.Distance" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#muTel.utils.units.PhysicalMagnitude" title="muTel.utils.units.PhysicalMagnitude"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhysicalMagnitude</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="muTel.utils.units.PhysicalMagnitude">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muTel.utils.units.</span></span><span class="sig-name descname"><span class="pre">PhysicalMagnitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'u'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnitude_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.units.PhysicalMagnitude" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="muTel.utils.units.PhysicalMagnitude.magnitude_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">magnitude_name</span></span><a class="headerlink" href="#muTel.utils.units.PhysicalMagnitude.magnitude_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="muTel.utils.units.PhysicalMagnitude.magnitude_order">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">magnitude_order</span></span><a class="headerlink" href="#muTel.utils.units.PhysicalMagnitude.magnitude_order" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="muTel.utils.units.PhysicalMagnitude.mantissa">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mantissa</span></span><a class="headerlink" href="#muTel.utils.units.PhysicalMagnitude.mantissa" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="muTel.utils.units.PhysicalMagnitude.precision">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">precision</span></span><a class="headerlink" href="#muTel.utils.units.PhysicalMagnitude.precision" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="muTel.utils.units.PhysicalMagnitude.unit_symbol">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unit_symbol</span></span><a class="headerlink" href="#muTel.utils.units.PhysicalMagnitude.unit_symbol" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="muTel.utils.units.Time">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">muTel.utils.units.</span></span><span class="sig-name descname"><span class="pre">Time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#muTel.utils.units.Time" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#muTel.utils.units.PhysicalMagnitude" title="muTel.utils.units.PhysicalMagnitude"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhysicalMagnitude</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="muTel.utils.units.Time.magnitude_order">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">magnitude_order</span></span><a class="headerlink" href="#muTel.utils.units.Time.magnitude_order" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="muTel.utils.units.Time.mantissa">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mantissa</span></span><a class="headerlink" href="#muTel.utils.units.Time.mantissa" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-muTel.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-muTel.utils" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="muTel.daqplotlib.plots.html" class="btn btn-neutral float-left" title="muTel.daqplotlib.plots package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Martín Alcalde Martínez.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

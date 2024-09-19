@@ -14,3 +14,6 @@ dev
 demo
 test
 src/muTel/dqm
+**/__pycache__
+**/__deprecated
+**/legacy

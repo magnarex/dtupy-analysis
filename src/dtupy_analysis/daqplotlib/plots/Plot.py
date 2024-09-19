@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import mplhep            as hep
 import pandas
 
-from muTel.utils.docs import is_documented_by
+from dtupy_analysis.utils.docs import is_documented_by
 from ..config import PlotConfig
 
 class Plot:
@@ -28,8 +28,8 @@ class Plot:
         ----------
         data : `~pandas.DataFrame` or `~pandas.Series`
             A DataFrame instance containing the data to be plotted. Can also be a `pandas.Series`.
-        plot_cfg : `~muTel.daqplotlib.config.PlotConfig`, optional
-            An instance of class `~muTel.daqplotlib.config.PlotConfig` to set the following plot settings.
+        plot_cfg : `~dtupy_analysis.daqplotlib.config.PlotConfig`, optional
+            An instance of class `~dtupy_analysis.daqplotlib.config.PlotConfig` to set the following plot settings.
             - `bins` : int
             - `range` : `list` [`int`, `int`]
             - `label` : `str`, may contain `{col}`
@@ -69,7 +69,7 @@ class Plot:
         
         Returns
         -------
-        self : muTel.daqplotlib.plots.Plot
+        self : dtupy_analysis.daqplotlib.plots.Plot
             An instances of this class.
         """
         if not (self.data is None): self.plot(*self._args, **self._kwargs)
@@ -138,7 +138,7 @@ class Plot:
         
 class CMSPlot(Plot):
     """
-    A subclass of `muTel.daqplotlib.plots.Plot` that provides support for the recommended
+    A subclass of `dtupy_analysis.daqplotlib.plots.Plot` that provides support for the recommended
     CMS style using the package `~mplhep`.
     
     """
@@ -162,8 +162,8 @@ class CMSPlot(Plot):
         ----------
         data : `~pandas.DataFrame` or `~pandas.Series`
             A DataFrame instance containing the data to be plotted. Can also be a `pandas.Series`.
-        plot_cfg : `~muTel.daqplotlib.config.PlotConfig`, optional
-            An instance of class `~muTel.daqplotlib.config.PlotConfig` to set the following plot settings.
+        plot_cfg : `~dtupy_analysis.daqplotlib.config.PlotConfig`, optional
+            An instance of class `~dtupy_analysis.daqplotlib.config.PlotConfig` to set the following plot settings.
             - `bins` : int
             - `range` : `list` [`int`, `int`]
             - `label` : `str`, may contain `{col}`

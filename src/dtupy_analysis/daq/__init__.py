@@ -3,7 +3,7 @@
 Data Acquisition (DAQ) Library
 ==============================
 
-The `muTel.daq` library offers support for handling the raw (binary)
+The `dtupy_analysis.daq` library offers support for handling the raw (binary)
 data read from the Slow Control Box output. It allows to convert this
 format into a tabular format (`.parquet`).
 
@@ -20,7 +20,7 @@ Module
 ----------- --------------------------------------------------
 `utils`     This module provides miscellaneous functionalities
             to the package that are used internally only by
-            the ``muTel.daq`` sub-package.
+            the ``dtupy_analysis.daq`` sub-package.
 =========== ==================================================
 
 ## Classes

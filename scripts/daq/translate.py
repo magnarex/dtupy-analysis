@@ -8,11 +8,11 @@ import argparse
 from pathlib import Path
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('src_path'      , 
-    help        = 'output file that will have table format (.parquet).'
-)
-parser.add_argument('out_path'      ,
+parser.add_argument('src_path'      ,
     help        = 'which file structured in lines of bytes to translate.'
+)
+parser.add_argument('out_path'      , 
+    help        = 'output file that will have table format (.parquet).'
 )
 parser.add_argument('--lang', '-l'  , 
     dest        = 'language'        ,

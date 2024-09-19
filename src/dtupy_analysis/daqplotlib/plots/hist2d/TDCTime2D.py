@@ -7,7 +7,7 @@ from .Hist2D import Hist2D
 
 class TDCTime2D(Hist2D):
     """
-    A subclass of ``muTel.daqplotlib.plots.Hist2D``, plots a variable against the
+    A subclass of ``dtupy_analysis.daqplotlib.plots.Hist2D``, plots a variable against the
     BX number on the upper X-axis and the TDC time on the lower X-axis. 
     
     Attributes
@@ -20,7 +20,7 @@ class TDCTime2D(Hist2D):
         The Axes instance in which the Plot is drawn.
     data : `~pandas.DataFrame` or `~panda.Series`
         A set of data that will be used by the `plot` method to draw the plot.
-    plot_cfg : `muTel.daqplotlib.config.PlotConfig`
+    plot_cfg : `dtupy_analysis.daqplotlib.config.PlotConfig`
         A default configuration for drawing the plots.
     cms_kwargs : `dict`
         A dictionary containing all the parameters for the CMS styling methods
@@ -33,7 +33,7 @@ class TDCTime2D(Hist2D):
         
     See Also
     --------
-    - muTel.daqplotlib.plots.Hist2D
+    - dtupy_analysis.daqplotlib.plots.Hist2D
     """
     
     def __init__(self, *args, **kwargs):
@@ -42,8 +42,8 @@ class TDCTime2D(Hist2D):
         ----------
         data : `~pandas.DataFrame` or `~pandas.Series`
             A DataFrame instance containing the data to be plotted. Can also be a `pandas.Series`.
-        plot_cfg : `~muTel.daqplotlib.config.PlotConfig`, optional
-            An instance of class `~muTel.daqplotlib.config.PlotConfig` to set the following plot settings.
+        plot_cfg : `~dtupy_analysis.daqplotlib.config.PlotConfig`, optional
+            An instance of class `~dtupy_analysis.daqplotlib.config.PlotConfig` to set the following plot settings.
             - `bins` : int
             - `range` : `list` [`int`, `int`]
             - `label` : `str`, may contain ``{col}``
@@ -91,7 +91,7 @@ class TDCTime2D(Hist2D):
             
         See Also
         --------
-        - muTel.daqplotlib.plots.Hist2D
+        - dtupy_analysis.daqplotlib.plots.Hist2D
         """
         kwargs['cms_pad'] = 0.05
         if 'cms_rlabel' in kwargs.keys():

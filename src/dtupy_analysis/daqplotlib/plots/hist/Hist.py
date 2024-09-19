@@ -10,7 +10,7 @@ from ...config import FieldConfig
 
 class Hist(CMSPlot):
     """
-    Subclass of ``muTel.daqplotlib.plots.CMSPlot`` that plots a ``matplotlib.pyplot.hist`` in CMS style.
+    Subclass of ``dtupy_analysis.daqplotlib.plots.CMSPlot`` that plots a ``matplotlib.pyplot.hist`` in CMS style.
     
     Attributes
     ----------
@@ -20,7 +20,7 @@ class Hist(CMSPlot):
         The Axes instance in which the Plot is drawn.
     data : `~pandas.DataFrame` or `~panda.Series`
         A set of data that will be used by the `plot` method to draw the plot.
-    plot_cfg : `muTel.daqplotlib.config.PlotConfig`
+    plot_cfg : `dtupy_analysis.daqplotlib.config.PlotConfig`
         A default configuration for drawing the plots.
     cms_kwargs : `dict`
         A dictionary containing all the parameters for the CMS styling methods
@@ -33,7 +33,7 @@ class Hist(CMSPlot):
         
     See Also
     --------
-    - muTel.daqplotlib.plots.CMSPlot
+    - dtupy_analysis.daqplotlib.plots.CMSPlot
     """
     def __init__(self, data, *args, cms_loc = 2, **kwargs):
         """
@@ -43,8 +43,8 @@ class Hist(CMSPlot):
         ----------
         data : `~pandas.DataFrame` or `~pandas.Series`
             A DataFrame instance containing the data to be plotted. Can also be a `pandas.Series`.
-        plot_cfg : `~muTel.daqplotlib.config.PlotConfig`, optional
-            An instance of class `~muTel.daqplotlib.config.PlotConfig` to set the following plot settings.
+        plot_cfg : `~dtupy_analysis.daqplotlib.config.PlotConfig`, optional
+            An instance of class `~dtupy_analysis.daqplotlib.config.PlotConfig` to set the following plot settings.
             - `bins` : int
             - `range` : `list` [`int`, `int`]
             - `label` : `str`, may contain `{col}`

@@ -88,7 +88,7 @@ class Config:
         return object.__getattribute__(self, '_cfg')
 
     def __repr__(self):
-        return f'<muTel.daqplotlib.config.{self.__class__.__name__} at {hex(id(self))}>'
+        return f'<dtupy_analysis.daqplotlib.config.{self.__class__.__name__} at {hex(id(self))}>'
     def __str__(self):
         return self.__repr__()
 
@@ -104,7 +104,7 @@ class FieldConfig(Config):
     - range : [``float``, ``float``]
     - label : ``str``
     - log : bool
-    These keys will be used by the ``plot`` method in ``muTel.daqplotlib.Plot`` (and its
+    These keys will be used by the ``plot`` method in ``dtupy_analysis.daqplotlib.Plot`` (and its
     subclasses) to style the plots and compute some internal variables.
     """
     
@@ -133,7 +133,7 @@ class FieldConfig(Config):
     
 class PlotConfig(Config):
     """
-    This class represents the configuration for a ``muTel.daqplotlib.plots.Plot`` (and its
+    This class represents the configuration for a ``dtupy_analysis.daqplotlib.plots.Plot`` (and its
     subclasses). Its a subclass of ``Config`` where each item in the `cfg` attribute
     is a ``FieldConfig`` instance.
     
@@ -157,7 +157,7 @@ class PlotConfig(Config):
         """
         Class method to build an instance from a ``.yaml`` file in the path given. It first checks the path given and
         in case this fails, it will check the default directory using the default cfg directory (``config_directory``)
-        defined in ``muTel.utils.paths``as ``<config_directory>/daq``.
+        defined in ``dtupy_analysis.utils.paths``as ``<config_directory>/daq``.
         
         Parameters
         ----------

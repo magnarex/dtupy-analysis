@@ -10,4 +10,4 @@ Estas son las dependencias para el software, desarrollado en Python 3.11.2:
 - `termcolor`
 
 Algunas dependencias opcionales:
-- `alive_progress` (para barras de progreso bonitas)
+- `alive-progress` (para barras de progreso bonitas)

@@ -11,7 +11,7 @@ from .TDCTime2D import TDCTime2D
 
 class BX2D(Hist2D):
     """
-    A subclass of ``muTel.daqplotlib.plots.Hist2D``, plots a variable against the BX
+    A subclass of ``dtupy_analysis.daqplotlib.plots.Hist2D``, plots a variable against the BX
     number on the X-axis. 
     
     Attributes
@@ -24,7 +24,7 @@ class BX2D(Hist2D):
         The Axes instance in which the Plot is drawn.
     data : `~pandas.DataFrame` or `~panda.Series`
         A set of data that will be used by the `plot` method to draw the plot.
-    plot_cfg : `muTel.daqplotlib.config.PlotConfig`
+    plot_cfg : `dtupy_analysis.daqplotlib.config.PlotConfig`
         A default configuration for drawing the plots.
     cms_kwargs : `dict`
         A dictionary containing all the parameters for the CMS styling methods
@@ -40,7 +40,7 @@ class BX2D(Hist2D):
         
     See Also
     --------
-    - muTel.daqplotlib.plots.Hist2D
+    - dtupy_analysis.daqplotlib.plots.Hist2D
     """
     
     def __init__(self, data, *args, cms_pad = 0, figsize = [14, 7], **kwargs):
@@ -51,8 +51,8 @@ class BX2D(Hist2D):
             A DataFrame instance containing the data to be plotted. Can also be a `pandas.Series`.
         var : str
             Variable that will plotted against BX
-        plot_cfg : `~muTel.daqplotlib.config.PlotConfig`, optional
-            An instance of class `~muTel.daqplotlib.config.PlotConfig` to set the following plot settings.
+        plot_cfg : `~dtupy_analysis.daqplotlib.config.PlotConfig`, optional
+            An instance of class `~dtupy_analysis.daqplotlib.config.PlotConfig` to set the following plot settings.
             - `bins` : int
             - `range` : `list` [`int`, `int`]
             - `label` : `str`, may contain `{col}`
@@ -102,7 +102,7 @@ class BX2D(Hist2D):
             
         See Also
         --------
-        - muTel.daqplotlib.plots.Hist2D
+        - dtupy_analysis.daqplotlib.plots.Hist2D
         """
 
         super().__init__(data, *args, cms_pad = cms_pad, figsize = figsize, **kwargs)

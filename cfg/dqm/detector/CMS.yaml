@@ -1,0 +1,11 @@
+stations:
+  type: range
+  args: [-2, 2]
+
+sl:
+  type: list
+  value: [THETA1, THETA2, ...]
+
+layers:
+  type: range
+  args: [1, 4]

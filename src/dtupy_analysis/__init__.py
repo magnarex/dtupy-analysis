@@ -1,8 +1,8 @@
 """
 =====
-muTel
+dtupy-analysis
 =====
-A package for all things **Muon Drift Tube** related.
+A package for all things related to analysing **Muon Drift Tube Upgrade** data.
 
 This package is divided in subpackages that are mostly stand-alone
 and comprise different parts of the Data Acquisiton (DAQ), Data

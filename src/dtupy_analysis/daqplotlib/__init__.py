@@ -3,7 +3,7 @@
 DAQ Plotting Library
 ====================
 
-Sub-package of `muTel` used for plotting with a standard style derived from
+Sub-package of `dtupy_analysis` used for plotting with a standard style derived from
 the CMS style guidlines for python available in this tutorial
 https://indico.cern.ch/event/1398843/#1-plotting-tools-and-recommend.
 

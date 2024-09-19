@@ -5,8 +5,8 @@ from copy import deepcopy
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-from muTel.utils.docs import is_documented_by
-from muTel.utils.paths import load_yaml, config_directory, get_file, data_directory, get_with_default
+from dtupy_analysis.utils.docs import is_documented_by
+from dtupy_analysis.utils.paths import load_yaml, config_directory, get_file, data_directory, get_with_default
 from ..utils.parsing import obdt2int
 from collections.abc import Iterable
 
@@ -18,10 +18,10 @@ if TYPE_CHECKING:
 
 try:
     from alive_progress import alive_bar
-    __do_bar = True
+    _do_bar = True
 except ImportError:
     alive_bar = None
-    __do_bar = False
+    _do_bar = False
 
 
 
@@ -226,7 +226,7 @@ class Translator(object):
     """
     
     _default_schema = {
-        'index'     : 'uint64' ,
+        'index_t'   : 'uint64' ,
         'obdt_type' : 'uint8'  ,
         'obdt_ctr'  : 'uint8'  ,
         'station'   : 'int8'   ,
@@ -242,7 +242,7 @@ class Translator(object):
         self._cfg = load_yaml(cfg_path, config_directory / Path('daq/mapping'))
         self._valid_links = {link : set(obdt.keys()) for link, obdt in self._cfg['connectors'].items()}
         # self._translator[link][channel] = [station, sl, layer, cell]
-        self.build_translator()
+        self._build_translator()
         
         
         
@@ -262,7 +262,7 @@ class Translator(object):
         self._lines_failed = 0
         
         if language.schema:
-            self._schema = Translator.parse_schema(self._default_schema | language.schema)
+            self._schema = Translator._parse_schema(self._default_schema | language.schema)
         else:
             self._schema = None
             
@@ -364,7 +364,7 @@ class Translator(object):
 
         if self._schema: self._pqwriter = pq.ParquetWriter(self.output_path, self._schema)
         
-        if __do_bar:
+        if _do_bar:
             with open(src_path, 'r') as file, alive_bar() as bar:
                 self._main_loop(file,max_buffer=max_buffer,bar=bar, debug = debug, verbose=verbose)
         else:
@@ -400,7 +400,8 @@ class Translator(object):
         debug : bool, default False
             Turn on or off the debugging messages.
         verbose : bool, default False
-            Turn on or off the verbality of the main loop.
+            Turn on or off the verbality of the main loop. This will print the expected keys for a KeyError, useful for debugging
+            the configuration of the dataset.
         
         Returns
         -------
@@ -417,7 +418,7 @@ class Translator(object):
         try:
             for i, line in enumerate(file):
                 try:
-                    fields = self._translate_word(int(line)) | {'index' : i}
+                    fields = self._translate_word(int(line)) | {'index_t' : i}
                     
                     self._update_buffer(fields)
                     
@@ -579,15 +580,3 @@ class Translator(object):
         Get the dictionary used for translation.
         """
         return self._translator
-if __name__ == '__main__':
-    lang = Italian()
-    print(lang(5764607523173461363))
-    print(lang(11529215049700534640))
-    
-    # exit()
-    # sxa_path = '/afs/ciemat.es/user/m/martialc/public/muTel_v4/muTel/data/sxa5_data.txt'
-    # out_path = '/afs/ciemat.es/user/m/martialc/public/muTel_v4/muTel/data/sxa5_data.parquet'
-    sxa_path = '/afs/cern.ch/user/r/redondo/work/public/sxa5/testpulse_theta_2.txt'
-    out_path = '/afs/ciemat.es/user/m/martialc/public/muTel_v4/muTel/data/testpulse_theta_2.parquet'
-    transr = Translator.from_it('testpulse_theta_2')
-    transr.translate(sxa_path, out_path, max_buffer=1e5, debug=True)

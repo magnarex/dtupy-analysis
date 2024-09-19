@@ -51,16 +51,16 @@ args = parser.parse_args()
 
 
 
-# Importing muTel package from anywhere
+# Importing dtupy_analysis package from anywhere
 parent = '/'.join(str(Path(__file__).resolve()).split('/')[:-3]) # porque está tres niveles por debajo de la carpeta de instalación
-loc = parent+'/src/muTel/__init__.py'
-src = 'muTel'
+loc = parent+'/src/dtupy_analysis/__init__.py'
+src = 'dtupy_analysis'
 spec = importlib.util.spec_from_file_location(src, loc)
 foo = importlib.util.module_from_spec(spec)
 sys.modules[src] = foo
 spec.loader.exec_module(foo)
 
-from muTel.daq import Translator
+from dtupy_analysis.daq import Translator
 
 
 # Running the translator

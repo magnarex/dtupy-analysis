@@ -18,16 +18,16 @@ import numpy.random as random
 
 # Importing muTel package from anywhere
 parent = '/'.join(str(Path(__file__).resolve()).split('/')[:-3]) # porque está tres niveles por debajo de la carpeta de instalación
-loc = parent+'/src/muTel/__init__.py'
-src = 'muTel'
+loc = parent+'/src/dtupy_analysis/__init__.py'
+src = 'dtupy_analysis'
 spec = importlib.util.spec_from_file_location(src, loc)
 foo = importlib.util.module_from_spec(spec)
 sys.modules[src] = foo
 spec.loader.exec_module(foo)
 
-import muTel.daqplotlib.plots  as daq_plots
-import muTel.daqplotlib.config as daq_config
-from   muTel.utils.paths import (
+import dtupy_analysis.daqplotlib.plots  as daq_plots
+import dtupy_analysis.daqplotlib.config as daq_config
+from   dtupy_analysis.utils.paths import (
     data_directory,
     get_file,
     load_yaml,
@@ -134,4 +134,5 @@ if __name__ == '__main__':
         help        = 'configuration file for the plots. Default is "default".'
     )
 
-    main(**parser.parse_args())
+    main(**vars(parser.parse_args()))
+    

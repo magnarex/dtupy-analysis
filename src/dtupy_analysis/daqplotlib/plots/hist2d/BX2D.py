@@ -156,7 +156,7 @@ class BX2D(Hist2D):
         self.ax.set_ylabel(self.plot_cfg[var].label.format(var=var))
             
         
-    def inspect_bx(self, savefig = None, bx_window = 5):
+    def inspect_bx(self, savefig = None, bx_window = 5, threshold = 0.05):
         """
         Scan the BX distributions to find the non-empty bins and plot a zoomed hist
         around these in TDC time (32·BX+TDC).
@@ -174,6 +174,7 @@ class BX2D(Hist2D):
         # Flatten hist in bx dimension and get the bins that are filled
         hist2d_flat = self.h[0].sum(axis=1)
         filled_bx = self.h[1][:-1][hist2d_flat > 0]
+        filled_cts = hist2d_flat[hist2d_flat > 0]
         
         cms_kwargs = {key:val for key, val in self.cms_kwargs.items() if key != 'cms_pad'}
         
@@ -181,14 +182,19 @@ class BX2D(Hist2D):
         for i, bx in enumerate(filled_bx):
             if bx in skip_bx:
                 continue
+            elif filled_cts[i]/filled_cts.sum() < threshold:
+                continue
             else:
-                
-                with TDCTime2D(self.data, self.var, plot_cfg = self.plot_cfg, bx_centre = bx, **self.cms_kwargs) as bx_plot:
+                with TDCTime2D(self.data, self.var, plot_cfg = self.plot_cfg, bx_centre = bx, **cms_kwargs) as bx_plot:
                     bx_plot.ax.yaxis.grid(True, which = 'both', color = 'k', linestyle='dotted', linewidth=1)
                     
                     if isinstance(savefig, (str, Path)):
                         path = Path(savefig)
-                        bx_plot.fig.savefig(savefig.with_stem(savefig.stem+f'_bx{bx}'))
+                        # Make figures subfolder
+                        fig_path = savefig.with_stem(f'{path.stem}_bx').with_suffix('')
+                        fig_path.mkdir(parents=True, exist_ok=True)
+                        
+                        bx_plot.fig.savefig(fig_path / Path(f'{path.stem}_bx{bx}{path.suffix}'))
                 
                 # This needs some fixing
                 # Add bins that will fall in the same window so there isn't overlap

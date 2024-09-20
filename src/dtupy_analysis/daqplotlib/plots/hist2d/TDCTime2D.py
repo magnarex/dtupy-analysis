@@ -131,8 +131,8 @@ class TDCTime2D(Hist2D):
         `bx_centre` and `bx_window`. This is so for better readability.
 
         """
-        hy_range = kwargs.pop('range', [None, None])
-        hy_bins  = kwargs.pop('bins' , [None, None])
+        hy_range = kwargs.pop('range', None)
+        hy_bins  = kwargs.pop('bins' , None)
                     
         if isinstance(var, str):
             hy_data  = self.data[var]

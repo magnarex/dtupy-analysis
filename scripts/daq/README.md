@@ -1,6 +1,6 @@
 # DAQ Scripts
 
-## plot.py
+## translate.py
 
 This script takes the following arguments:
 

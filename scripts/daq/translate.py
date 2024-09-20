@@ -51,7 +51,7 @@ args = parser.parse_args()
 
 
 
-# Importing dtupy_analysis package from anywhere
+# Importing muTel package from anywhere
 parent = '/'.join(str(Path(__file__).resolve()).split('/')[:-3]) # porque está tres niveles por debajo de la carpeta de instalación
 loc = parent+'/src/dtupy_analysis/__init__.py'
 src = 'dtupy_analysis'

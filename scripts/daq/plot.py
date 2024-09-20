@@ -16,7 +16,7 @@ import numpy as np
 import numpy.random as random
 
 
-# Importing dtupy_analysis package from anywhere
+# Importing muTel package from anywhere
 parent = '/'.join(str(Path(__file__).resolve()).split('/')[:-3]) # porque está tres niveles por debajo de la carpeta de instalación
 loc = parent+'/src/dtupy_analysis/__init__.py'
 src = 'dtupy_analysis'
@@ -134,4 +134,5 @@ if __name__ == '__main__':
         help        = 'configuration file for the plots. Default is "default".'
     )
 
-    main(**parser.parse_args())
+    main(**vars(parser.parse_args()))
+    

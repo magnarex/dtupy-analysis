@@ -60,6 +60,7 @@ def main(src_path, fig_dir, hist_cfg):
         hist_dir = link_dir/Path('var_dist')
         hist_dir.mkdir(parents=True, exist_ok=True)
         for var in fields:
+            break #TODO: REMOVE THIS
             try:
                 with daq_plots.Hist(data, var, plot_cfg = plot_cfg, cms_rlabel=f'link {link}') as plot:
                     plot.fig.savefig(hist_dir/Path(f'{var}.png'),dpi=300)
@@ -113,6 +114,10 @@ def main(src_path, fig_dir, hist_cfg):
                         plot.ax.yaxis.grid(True, which='both', color = 'k', linestyle='dotted', linewidth=1)
                         plot.fig.savefig(sl_dir/Path(f'BX2D_vs_cell.png'))
                         plot.inspect_bx (sl_dir/Path(f'BX2D_vs_cell.png'))
+                        
+                    with daq_plots.Hist2D(df_ssl, 'cell', 'layer', plot_cfg = plot_cfg, cms_rlabel=label, figsize=(15, 8)) as plot:
+                        plot.ax.yaxis.grid(True, which='both', color = 'k', linestyle='dotted', linewidth=1)
+                        plot.fig.savefig(sl_dir/Path(f'occupancy_st{station}sl{sl}.png'))
 
         
         print('\n')

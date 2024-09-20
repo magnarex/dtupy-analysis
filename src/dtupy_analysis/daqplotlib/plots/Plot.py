@@ -218,15 +218,15 @@ class CMSPlot(Plot):
         )
         
         self._cms_kwargs = dict(
-            label  = cms_label                                      ,
-            loc    = cms_loc                                        ,
-            data   = cms_data                                       ,
-            rlabel = cms_rlabel                                     ,
-            exp    = ('CMS' if not cms_exp else 'CMS ' + cms_exp)   ,
-            pad    = cms_pad                                        ,
+            cms_label  = cms_label                                      ,
+            cms_loc    = cms_loc                                        ,
+            cms_data   = cms_data                                       ,
+            cms_rlabel = cms_rlabel                                     ,
+            cms_exp    = ('CMS' if not cms_exp else 'CMS ' + cms_exp)   ,
+            cms_pad    = cms_pad                                        ,
         )
         
-        hep.cms.label(**self.cms_kwargs) 
+        hep.cms.label(**{key[4:] : value for (key, value) in self.cms_kwargs.items()}) 
           
     @property
     def cms_kwargs(self) -> dict[str, Any]:

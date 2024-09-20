@@ -4,11 +4,15 @@ from dtupy_analysis.utils.paths import get_file, data_directory
 from dtupy_analysis.dqm.classes.MuSL import MuSL
 
 class MuData:
+    __allowed_engines = {'dask'}
     """
     Data handler
     """
     def __init__(self, engine = 'dask'):
-        self._engine = engine
+        if engine in self.__allowed_engines:
+            self._engine = engine
+        else:
+            raise ValueError(f"Specified engine is not allowed, please choose one from: {self.__allowed_engines}")
     
     @property
     def data(self):
@@ -45,9 +49,7 @@ class MuData:
         
         if engine == 'dask':
             instance._ddf = dd.read_parquet(path,
-                    engine              = 'pyarrow' ,
-                    # dtype_backend       = "pyarrow" ,
-                    filesystem          = 'arrow'   ,
+                    # engine              = 'pyarrow' ,
                     split_row_groups    =  True     ,
                 )
             
@@ -58,6 +60,6 @@ class MuData:
         Get all data from a (station, sl) pair
         """
         if self.engine == 'dask':
-            return MuSL.from_dask(self.data, station = station, sl = sl)
+            return MuSL.from_dask(self, station = station, sl = sl)
     
     

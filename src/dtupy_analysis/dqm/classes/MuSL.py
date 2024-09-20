@@ -13,8 +13,8 @@ class MuSL:
         return self._engine
     
     @classmethod
-    def from_dask(self, ddf, station, sl):
-        return MuSL(ddf, station, sl, engine='dask')
+    def from_dask(self, mudata, station, sl):
+        return MuSL(mudata, station, sl, engine='dask')
     
     @property
     def data(self):

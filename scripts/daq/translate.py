@@ -64,7 +64,10 @@ from dtupy_analysis.daq import Translator
 
 
 # Running the translator
-if args.language.lower() == 'it': transr = Translator.from_it(args.cfg_path)
+if   args.language.lower() == 'it': transr = Translator.from_it(args.cfg_path)
+elif args.language.lower() == 'la': transr = Translator.from_la(args.cfg_path)
+else: raise ValueError(f"No language with this id ('{args.language.lower()}') has been configured in the script.")
+
 
 transr.translate(args.src_path, args.out_path,
     max_buffer  = args.buffer_size  ,

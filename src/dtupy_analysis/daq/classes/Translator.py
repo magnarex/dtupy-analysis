@@ -58,7 +58,7 @@ class Translator(object):
     """
     
     _default_schema = {
-        'index_t'   : 'uint64' ,
+        'index'     : 'uint64' ,
         'obdt_type' : 'uint8'  ,
         'obdt_ctr'  : 'uint8'  ,
         'station'   : 'int8'   ,
@@ -250,7 +250,7 @@ class Translator(object):
         try:
             for i, line in enumerate(file):
                 try:
-                    fields = self._translate_word(int(line)) | {'index_t' : i}
+                    fields = self._translate_word(int(line)) | {'index' : i}
                     
                     self._update_buffer(fields)
                     

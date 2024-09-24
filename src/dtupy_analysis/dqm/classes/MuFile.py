@@ -6,7 +6,6 @@ import pyarrow.parquet  as pq
 import dask.dataframe   as dd
 import pandas           as pd
 
-from .MuData import MuData
 from dtupy_analysis.utils.paths import  get_file,\
                                         data_directory
 
@@ -33,26 +32,28 @@ class MuFile:
     def engine(self):
         return self._engine
     
-    # @classmethod
-    # def to_batches(cls, path : 'str | pathlib.Path', batch_size : int = 10000):
-    #     """
-    #     Reads a parquet file in batches and provides an object that allows user to handle
-    #     the mapping manually.
-    #     """
-    #     path = get_file(path, data_directory, ['.parquet'])
-    #     return MuFileBatches(path, batch_size=batch_size)
+    @classmethod
+    def to_batches(cls, path : 'str | pathlib.Path', batch_size : int = 10000):
+        """
+        Reads a parquet file in batches and provides an object that allows user to handle
+        the mapping manually.
+        """
+        path = get_file(path, data_directory, ['.parquet'])
+        return MuFileBatches(path, batch_size=batch_size)
     
     @classmethod
-    def to_dask(cls, path : 'str | pathlib.Path', partition_size : int = 10000):
+    def to_dask(cls, path : 'str | pathlib.Path', blocksize : 'int | str' = '1MB'):
+        from .MuData import MuData
+
         """
         Reads a parquet file in batches, needs mapping.
         """
         
         path = get_file(path, data_directory, ['.parquet'])
         data = dd.read_parquet(path,
-                        # engine              = 'pyarrow' ,
-                        split_row_groups    =  True     ,
-                        blocksize           = partition_size
+                        engine              = 'pyarrow' ,
+                        split_row_groups    =  'adaptive',
+                        blocksize           = blocksize
                     )
         file = cls(data, 'dask')
         return MuData.from_dask(file)

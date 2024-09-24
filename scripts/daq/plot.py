@@ -60,7 +60,6 @@ def main(src_path, fig_dir, hist_cfg):
         hist_dir = link_dir/Path('var_dist')
         hist_dir.mkdir(parents=True, exist_ok=True)
         for var in fields:
-            break #TODO: REMOVE THIS
             try:
                 with daq_plots.Hist(data, var, plot_cfg = plot_cfg, cms_rlabel=f'link {link}') as plot:
                     plot.fig.savefig(hist_dir/Path(f'{var}.png'),dpi=300)

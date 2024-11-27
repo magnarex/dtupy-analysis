@@ -57,7 +57,7 @@ def main(src_path, fig_dir, hist_cfg):
     if 'link' not in df.columns:
         df['link'] = 0
 
-        for link, data in df.groupby('link'):
+    for link, data in df.groupby('link'):
         print(f'Plotting for link {link}')
         link_dir = fig_dir/Path(f'link_{str(link).zfill(2)}')
         link_dir.mkdir(parents=True, exist_ok=True)

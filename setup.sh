@@ -20,10 +20,14 @@ else
     echo "  Done!"
 fi
 
-# Create the conda env only if --no-conda is not provided
+# Create the conda env only if --no-conda is not provided and the env doesn't already exist
 if [[ ! " $@ " =~ " --no-conda " ]]; then
-    echo "Creating conda environment..."
-    conda env create -f "$script_dir/environment.yml"
+    if ! conda env list | grep -q 'dtupy-analysis'; then
+        echo "Creating conda environment..."
+        conda env create -f "$script_dir/environment.yaml"
+    else
+        echo "Conda environment already exists. Skipping creation."
+    fi
 else
     echo "Skipping conda environment creation due to --no-conda option."
 fi

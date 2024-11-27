@@ -54,6 +54,7 @@ def get_file(path, default_dir = None, suffix = None, debug=False):
         return get_with_default(path,default_dir,debug=debug)
     elif isinstance(suffix, str):
         return get_with_default(path.with_suffix(suffix), default_dir,debug=debug)
+        raise ValueError(f"Can't find a file with name {path}{suffix}!")
     elif isinstance(suffix, Iterable):
         for sfx_i in suffix:
             path = get_with_default(path.with_suffix(sfx_i), default_dir,debug=debug)

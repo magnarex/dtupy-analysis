@@ -157,7 +157,6 @@ class BX2D(Hist2D):
         self.ax.set_ylabel(self.plot_cfg[var].label.format(var=var))
         
         plt.tight_layout()
-
         
     def inspect_bx(self, savefig = None, bx_window = 5, threshold = 0.05):
         """
@@ -191,13 +190,11 @@ class BX2D(Hist2D):
                 with TDCTime2D(self.data, self.var, plot_cfg = self.plot_cfg, bx_centre = bx, **cms_kwargs) as bx_plot:
                     bx_plot.ax.yaxis.grid(True, which = 'both', color = 'k', linestyle='dotted', linewidth=1)
                     
-                    
                     if isinstance(savefig, (str, Path)):
                         path = Path(savefig)
                         # Make figures subfolder
                         fig_path = savefig.with_stem(f'{path.stem}_bx').with_suffix('')
                         fig_path.mkdir(parents=True, exist_ok=True)
-
                         bx_plot.fig.savefig(fig_path / Path(f'{path.stem}_bx{bx}{path.suffix}'))
                 
                 # This needs some fixing

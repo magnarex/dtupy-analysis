@@ -77,7 +77,7 @@ class Translator(object):
         .. [1] See https://arrow.apache.org/docs/python/api/datatypes.html#factory-functions
         """
         return pa.schema([(field, eval(f'pa.{dtype}()')) for field, dtype in sorted(schema.items())])
-
+    
     def _reset_buffer(self):
         """
         Resets the buffer using `_empty_buffer` as a template. In turn, `_empty_buffer` is
@@ -113,7 +113,7 @@ class Translator(object):
         ----------------
         max_buffer : int, default 100000
             Maximum size the buffer will reach before dumping into disk.
-        from,_dtupy : bool, default False
+        from_dtupy : bool, default False
             Whether the input file is in the format of the dtupy files.
         debug : bool, default False
             Turn on or off the debugging messages.
@@ -287,7 +287,6 @@ class Translator(object):
         self.pqwriter.write_table(table)
         self._lines_read += _size
         self._reset_buffer()
-
     @classmethod
     def from_it(cls, cfg_path : 'str | pathlib.Path'):
         """

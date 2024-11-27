@@ -303,12 +303,12 @@ class Translator(object):
         return Translator_sxa5(Latin(), cfg_path)
     
     @classmethod
-    def from_es(cls):
+    def from_es(cls, cfg_path : 'str | pathlib.Path' = None):
         """
         Construct instance with `Latin` as default language. This is for the older FW versions.
         It used to be called `Italian` in older versions of the package.
         """
-        return Translator_dtupy(Spanish())
+        return Translator_dtupy(Spanish(), cfg_path)
 
     
     @property
@@ -344,23 +344,103 @@ class Translator(object):
         """
         return self._output_path
 
+    def _build_translator(self):
+        """
+        This function builds the translator dictionary from the config file.
+        The translator is stored in `_translator` which may be accesed through
+        the `translator` property.
+        """
+        
+        cfg = self._cfg
+        translator = {}
+        
+        for link, obdt in cfg['links'].items():
+            translator[link] = {}
+            for obdt_ctr, (station, sl, sl_ctr) in cfg['connectors'][link].items():
+                
+                # OBDT type | OBDT connector | Station | Superlayer | Layer | Cell (sslc)
+                
+                # IMPORTANT: IF YOU WANT TO CHANGE THE COLUMNS OF THE OUTPUT READ THIS
+                # This are the lists that the translator will get when calling self.lookup_sllc, if you want to add a column
+                # in the output file, this is the thing you wanna edit. You must also edit Translator._default_schema to add
+                # the data type of the new column.
+                # self.lookup_sllc(fields) -> self._translator[link][channel] -> sllc 
+                
+                sslc = [
+                    [*obdt2int(obdt, obdt_ctr), station, sl, *wl[::-1]]                    # Fields returned by link & channel
+                    for wl in list(itertools.product(cfg['cells'][sl_ctr], cfg['layers'])) # Unpack cells and layers (cartesian product)
+                ]
+                
+                translator[link] = translator[link] | dict(zip(cfg['obdt'][obdt][obdt_ctr],sslc))
+                
+        self._translator =  translator
+        return
+
+
+    @property
+    def cfg_name(self) -> str:
+        """
+        Get the name of the config file.
+        """
+        return self._cfg_path.stem
+    @property
+    def translator(self) -> dict[int, dict[int, list]]:
+        """
+        Get the dictionary used for translation.
+        """
+        return self._translator
+
 
 class Translator_dtupy(Translator):
     def __init__(self,
                  language : 'Language',
+                 cfg_path = None,
                  data_width = 65,
                  words_per_row = 3,
                  timestamp_width = 28,
                  start_time = None
             ):
+        
+        if cfg_path is not None:
+            self._cfg_path = Path(cfg_path)
+            self._cfg = load_yaml(cfg_path, config_directory / Path('daq/mapping'))
+            self._build_translator()
+            self._default_schema = self._default_schema | {'obdt_type' : 'uint8','obdt_ctr' : 'uint8', 'link' : 'uint8'}
+        else:
+            self._cfg_path = None
+            self._cfg = None
+            self._translator = None
+        
         super().__init__(language)
+        
         self._words_per_row = words_per_row
         self._word_size = data_width + 1 + timestamp_width
         self._data_width = data_width
         self._timestamp_width = timestamp_width
         self._start_time = start_time
         self._invalid_lines = 0
-    
+    def _build_translator(self):
+        """
+        This function builds the translator dictionary from the config file.
+        The translator is stored in `_translator` which may be accesed through
+        the `translator` property.
+        """
+        
+        cfg = self._cfg
+        translator = {}
+        
+        for link, obdt in cfg['links'].items():
+            for obdt_ctr, (station, sl, sl_ctr) in cfg['connectors'][link].items():
+                if station not in translator.keys(): translator[station] = {}
+                if sl not in translator[station].keys(): translator[station][sl] = {}
+                
+                for cell in cfg['cells'][sl_ctr]:
+                    translator[station][sl][cell] = [*obdt2int(obdt, obdt_ctr), link, sl_ctr]
+                
+                
+        self._translator =  translator
+        return
+
     @is_documented_by(Translator.translate)
     def translate(self,
         src_path : 'str | Path', 
@@ -391,7 +471,18 @@ class Translator_dtupy(Translator):
         
     @is_documented_by(Translator._translate_word)
     def _translate_word(self, word):
-        return self.language(word >> (self._timestamp_width + 1)) | self.language.timestamp(word)
+        fields = self.language(word >> (self._timestamp_width + 1)) | self.language.timestamp(word)
+        
+        fields['layer'] += 1
+        fields['station'] += 1
+        
+        if self.translator is not None:
+            obdt_type, obdt_ctr, link, sl_ctr = self.translator[fields['station']][fields['sl']][fields['cell']]
+            fields['obdt_type'] = obdt_type
+            fields['obdt_ctr'] = obdt_ctr
+            fields['link'] = link
+            
+        return fields
 
 
     def _main_loop(self,
@@ -413,6 +504,7 @@ class Translator_dtupy(Translator):
                     line = sum([struct.unpack('>I', file.read(4))[0] << (32*i) for i in range(self._words_per_row)])
                 
                 except struct.error:
+                    # No more lines to read
                     break
                 
                 fields = self.translate_word(line, 
@@ -420,15 +512,14 @@ class Translator_dtupy(Translator):
                     debug           = debug,
                     verbose         = verbose,
                 )
+                
                 if fields is None: continue
                 elif not (fields['valid_trig'] & fields['valid_ro']):
                     self._invalid_lines += 1
                     self._lines_failed  += 1
                     continue
                 
-                fields['layer'] += 1
-                fields['station'] += 1
-                
+                # print(fields); exit()
                 self._update_buffer(fields | {'index' : i, 'time' : store_time})
                 
                 if self._buffer_size == max_buffer: self._dump_buffer()
@@ -443,6 +534,21 @@ class Translator_dtupy(Translator):
 
         self._dump_buffer()
         return True, i
+
+    def error_handler(self, func, debug=False, verbose=False, **deco_kwargs):
+        def wrapper(word, *args, **kwargs):
+            try:
+                return func(word, *args, **kwargs)
+            except KeyError as e:
+                self._lines_failed += 1
+                self._lines_failed += 1                
+                
+                return None
+            except Exception as e:
+                print(f"Unexpected error: {e}")
+        return wrapper
+
+
 
 class Translator_sxa5(Translator):
     """
@@ -491,37 +597,6 @@ class Translator_sxa5(Translator):
         self._build_translator()
    
 
-    def _build_translator(self):
-        """
-        This function builds the translator dictionary from the config file.
-        The translator is stored in `_translator` which may be accesed through
-        the `translator` property.
-        """
-        
-        cfg = self._cfg
-        translator = {}
-        
-        for link, obdt in cfg['links'].items():
-            translator[link] = {}
-            for obdt_ctr, (station, sl, sl_ctr) in cfg['connectors'][link].items():
-                
-                # OBDT type | OBDT connector | Station | Superlayer | Layer | Cell (sslc)
-                
-                # IMPORTANT: IF YOU WANT TO CHANGE THE COLUMNS OF THE OUTPUT READ THIS
-                # This are the lists that the translator will get when calling self.lookup_sllc, if you want to add a column
-                # in the output file, this is the thing you wanna edit. You must also edit Translator._default_schema to add
-                # the data type of the new column.
-                # self.lookup_sllc(fields) -> self._translator[link][channel] -> sllc 
-                
-                sslc = [
-                    [*obdt2int(obdt, obdt_ctr), station, sl, *wl[::-1]]                    # Fields returned by link & channel
-                    for wl in list(itertools.product(cfg['cells'][sl_ctr], cfg['layers'])) # Unpack cells and layers (cartesian product)
-                ]
-                
-                translator[link] = translator[link] | dict(zip(cfg['obdt'][obdt][obdt_ctr],sslc))
-                
-        self._translator =  translator
-        return
 
     
     
@@ -566,18 +641,6 @@ class Translator_sxa5(Translator):
         """
         return self._translator[fields['link']][fields['channel']]
     
-    @property
-    def cfg_name(self) -> str:
-        """
-        Get the name of the config file.
-        """
-        return self._cfg_path.stem
-    @property
-    def translator(self) -> dict[int, dict[int, list]]:
-        """
-        Get the dictionary used for translation.
-        """
-        return self._translator
 
     def error_handler(self, func, debug=False, verbose=False, **deco_kwargs):
         def wrapper(word, *args, **kwargs):

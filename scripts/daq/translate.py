@@ -66,8 +66,8 @@ from dtupy_analysis.daq import Translator
 # Running the translator
 if   (args.language.lower() == 'it') and (args.cfg_path is not None): transr = Translator.from_it(args.cfg_path)
 elif (args.language.lower() == 'la') and (args.cfg_path is not None): transr = Translator.from_la(args.cfg_path)
-elif (args.language.lower() == 'es') and (args.cfg_path is     None): transr = Translator.from_es()
-else: raise ValueError(f"No language with this id ('{args.language.lower()}') has been configured in the script.")
+elif (args.language.lower() == 'es')                                : transr = Translator.from_es(args.cfg_path)
+else: raise ValueError(f"No language configuration for ('{args.language.lower()}') is wrong. Maybe missing the --cfg argument?")
 
 
 transr.translate(args.src_path, args.out_path,

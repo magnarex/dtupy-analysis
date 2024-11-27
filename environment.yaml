@@ -4,15 +4,11 @@ channels:
   - conda-forge
 dependencies:
   - alive-progress=3.1.5
-  - dask=2024.8.2
-  - dask-core=2024.8.2
-  - dask-expr=1.1.13
   - matplotlib-base=3.9.2
-  - mplhep=0.3.52
-  - msgpack-python=1.0.5
   - numpy=1.26.4
-  - pyarrow=16.1.0
-  - python=3.11.9
-  - termcolor=2.1.0
+  - numpy-base=1.26.4
+  - pandas=2.2.2
+  - python=3.12.3
   - scipy=1.13.1
-  - tqdm
+  - termcolor=2.1.0
+  - tqdm=4.66.5

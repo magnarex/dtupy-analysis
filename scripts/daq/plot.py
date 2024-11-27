@@ -57,11 +57,11 @@ def main(src_path, fig_dir, hist_cfg):
     if 'link' not in df.columns:
         df['link'] = 0
 
-        for link, data in df.groupby('link'):
+    for link, data in df.groupby('link'):
         print(f'Plotting for link {link}')
         link_dir = fig_dir/Path(f'link_{str(link).zfill(2)}')
         link_dir.mkdir(parents=True, exist_ok=True)
-
+                
         # VARIABLE DISTRIBUTIONS
         hist_dir = link_dir/Path('var_dist')
         hist_dir.mkdir(parents=True, exist_ok=True)
@@ -111,22 +111,22 @@ def main(src_path, fig_dir, hist_cfg):
 
 
         if np.isin(['station', 'sl', 'cell', 'tdc'], fields).all():
-            for station in df.station.unique():
+            for station in data.station.unique():
                 station_dir = link_dir/Path(f'station_{str(station).zfill(2)}')
                 station_dir.mkdir(parents=True, exist_ok=True)
                 
-                for sl in df[df.station == station].sl.unique():
+                for sl in data[data.station == station].sl.unique():
                     sl_dir = station_dir/Path(f'sl_{str(sl).zfill(2)}')
                     sl_dir.mkdir(parents=True, exist_ok=True)
                     
                     label = f'link {link} station {station} sl {sl}'
-                    df_ssl = df[(df.station == station) & (df.sl == sl)]
+                    df_ssl = data[(data.station == station) & (data.sl == sl)]
                     with daq_plots.BX2D(df_ssl, 'cell', plot_cfg = plot_cfg, cms_rlabel=label) as plot:
                         plot.ax.yaxis.grid(True, which='both', color = 'k', linestyle='dotted', linewidth=1)
                         plot.fig.savefig(sl_dir/Path(f'BX2D_vs_cell.png'))
                         plot.inspect_bx (sl_dir/Path(f'BX2D_vs_cell.png'))
                         
-                    with daq_plots.Hist2D(df_ssl, 'cell', 'layer', plot_cfg = plot_cfg, cms_rlabel=label, figsize=(15, 8)) as plot:
+                    with daq_plots.Hist2D(df_ssl, 'cell', 'layer', plot_cfg = plot_cfg, cms_rlabel=label, figsize=(15, 8), log_c = True) as plot:
                         plot.ax.yaxis.grid(True, which='both', color = 'k', linestyle='dotted', linewidth=1)
                         plot.fig.savefig(sl_dir/Path(f'occupancy_mb{station}_sl{sl}.png'))
                     

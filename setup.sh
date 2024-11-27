@@ -38,3 +38,7 @@ if [[ ":$PYTHONPATH:" != *":$script_dir/src:"* ]]; then
 else
     echo "$script_dir/src is already in PYTHONPATH."
 fi
+
+conda activate dtupy-analysis
+
+echo "Setup complete!"

@@ -33,7 +33,7 @@ def is_valid(path, debug = False):
             path.unlink()
             return True
         except OSError as e:
-            print(f"Can't touch {path}: {e}")
+            if debug: print(f"Can't touch {path}: {e}")
             return False
 
 def get_with_default(path,default_dir,debug=False):

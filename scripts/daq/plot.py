@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Use this script to plot a series of standard plots that will provide useful insight
 into the status and performance of the readout electronics and processing of raw
@@ -41,6 +42,9 @@ def main(src_path, fig_dir, hist_cfg):
         fig_dir = Path(parent+'/figs') / parquet_file.stem
     else:
         fig_dir = Path(fig_dir)
+    
+    fig_dir = fig_dir / 'daq'
+    
     fig_dir.mkdir(parents=True, exist_ok=True)
 
 
@@ -49,8 +53,10 @@ def main(src_path, fig_dir, hist_cfg):
     fields = list(plot_cfg.keys())
 
 
-    df = pd.read_parquet(parquet_file, columns=fields)
-
+    df = pd.read_parquet(parquet_file)
+    if 'link' not in df.columns:
+        df['link'] = 0
+        
     for link, data in df.groupby('link'):
         print(f'Plotting for link {link}')
         link_dir = fig_dir/Path(f'link_{str(link).zfill(2)}')
@@ -60,6 +66,7 @@ def main(src_path, fig_dir, hist_cfg):
         hist_dir = link_dir/Path('var_dist')
         hist_dir.mkdir(parents=True, exist_ok=True)
         for var in fields:
+            if var not in data.columns: continue
             try:
                 with daq_plots.Hist(data, var, plot_cfg = plot_cfg, cms_rlabel=f'link {link}') as plot:
                     plot.fig.savefig(hist_dir/Path(f'{var}.png'),dpi=300)
@@ -82,7 +89,12 @@ def main(src_path, fig_dir, hist_cfg):
         if np.isin(['channel', 'tdc'], fields).all():
             with daq_plots.BX2D(data, 'channel', plot_cfg = plot_cfg, cms_rlabel=f'link {link}') as plot:
                 plot.fig.savefig(link_dir/Path('BX2D_vs_ch.png'))
-                plot.inspect_bx (link_dir/Path('BX2D_vs_ch.png'))        
+                plot.inspect_bx (link_dir/Path('BX2D_vs_ch.png'))
+                
+        if np.isin(['obdt_ch', 'tdc'], fields).all():
+            with daq_plots.BX2D(data, 'obdt_ch', plot_cfg = plot_cfg, cms_rlabel=f'link {link}') as plot:
+                plot.fig.savefig(link_dir/Path('BX2D_vs_ch.png'))
+                plot.inspect_bx (link_dir/Path('BX2D_vs_ch.png'))
             
         if np.isin(['obdt_ctr', 'tdc'], fields).all():
             # 2D HIST
@@ -116,8 +128,17 @@ def main(src_path, fig_dir, hist_cfg):
                         
                     with daq_plots.Hist2D(df_ssl, 'cell', 'layer', plot_cfg = plot_cfg, cms_rlabel=label, figsize=(15, 8)) as plot:
                         plot.ax.yaxis.grid(True, which='both', color = 'k', linestyle='dotted', linewidth=1)
-                        plot.fig.savefig(sl_dir/Path(f'occupancy_st{station}sl{sl}.png'))
-
+                        plot.fig.savefig(sl_dir/Path(f'occupancy_mb{station}_sl{sl}.png'))
+                    
+                    if np.isin(['channel', 'tdc'], fields).all():
+                        with daq_plots.BX2D(df_ssl, 'channel', plot_cfg = plot_cfg, cms_rlabel=f'link {link}') as plot:
+                            plot.fig.savefig(sl_dir/Path('BX2D_vs_ch.png'))
+                            plot.inspect_bx (sl_dir/Path('BX2D_vs_ch.png'))
+                            
+                    if np.isin(['obdt_ch', 'tdc'], fields).all():
+                        with daq_plots.BX2D(df_ssl, 'obdt_ch', plot_cfg = plot_cfg, cms_rlabel=f'link {link}') as plot:
+                            plot.fig.savefig(sl_dir/Path('BX2D_vs_ch.png'))
+                            plot.inspect_bx (sl_dir/Path('BX2D_vs_ch.png'))
         
         print('\n')
     

@@ -92,6 +92,20 @@ class Hist2D(CMSPlot):
         
         """
         super().__init__(*args, cms_pad = cms_pad, cmap = cmap, **kwargs)
+         # Make colorbar from colormap
+        # Create gridspec for the plot and colorbar
+        
+
+    def init_figure(self, figsize=None):
+        self._fig = plt.figure(figsize=figsize)
+        
+        gs = mpl.gridspec.GridSpec(1, 2, width_ratios=[20, 1])
+        self._ax  = self.fig.add_subplot(gs[0])
+        self._cax = self.fig.add_subplot(gs[1])
+    
+    @property
+    def cax(self):
+        return self._cax
     
     def plot(self, var_x, var_y, cmap = 'cividis', log_c = False, **kwargs):
         """
@@ -112,13 +126,16 @@ class Hist2D(CMSPlot):
         
         """
 
-        range = kwargs.pop('range', [None, None])
-        bins  = kwargs.pop('bins' , [None, None])
-            
+        range  = kwargs.pop('range', [None, None])
+        bins   = list(kwargs.pop('bins' , [None, None]))
+        xlabel = kwargs.pop('xlabel' , None)
+        ylabel = kwargs.pop('ylabel' , None)
+        
         if isinstance(var_x, str):
             hx_data  = self.data[var_x]
             if range[0] is None: range[0] = self.plot_cfg[var_x].get('range', None)
             if bins [0] is None: bins [0] = self.plot_cfg[var_x].get('bins' , None)
+            if xlabel   is None: xlabel   = self.plot_cfg[var_x].get('label', None)
         else:
             hx_data  = var_x
         
@@ -126,6 +143,7 @@ class Hist2D(CMSPlot):
             hy_data  = self.data[var_y]
             if range[1] is None: range[1] = self.plot_cfg[var_y].get('range', None)
             if bins [1] is None: bins [1] = self.plot_cfg[var_y].get('bins' , None)
+            if ylabel   is None: ylabel   = self.plot_cfg[var_y].get('label', None)
         else:
             hy_data  = var_y
 
@@ -158,10 +176,15 @@ class Hist2D(CMSPlot):
             hy_minor_ticks = np.arange(*range[1])
             self.ax.set_yticks(hy_minor_ticks, minor=True)
 
+        if xlabel is not None: self.ax.set_xlabel(xlabel.format(var=var_x))
+        if ylabel is not None: self.ax.set_ylabel(ylabel.format(var=var_y))
 
-        # Make colorbar from colormap
-        plt.colorbar(h[3], ax=self.ax)
+        
+        # Create colorbar
+        plt.colorbar(h[3], cax=self.cax, ax=self.ax)
         self.fig.get_axes()[-1].set_ylabel('Events', fontsize=20)
 
+        plt.tight_layout()
+        
         return h
 

@@ -52,7 +52,7 @@ class Config:
     
     def get(self, key, default = None):
         """
-        Gets an the value of `key` with `default` as default. Wrapper for `cfg.get`\.
+        Gets an the value of `key` with `default` as default. Wrapper for `cfg.get`.
         
         Parameters
         ----------
@@ -89,8 +89,9 @@ class Config:
 
     def __repr__(self):
         return f'<dtupy_analysis.daqplotlib.config.{self.__class__.__name__} at {hex(id(self))}>'
+    
     def __str__(self):
-        return self.__repr__()
+        return self.cfg.__str__()
 
 class FieldConfig(Config):
     """
@@ -169,5 +170,13 @@ class PlotConfig(Config):
         plot_cfg : `PlotConfig`
             The `PlotConfig` instance built from the dictionary in ``.yaml`` format.
         """
-        cfg = load_yaml(path, config_directory / pathlib.Path('daq'))
+        cfg = load_yaml(path, config_directory / pathlib.Path('daqplotlib'))
         return cls(cfg)
+    
+    def __repr__(self):
+        str_list = []
+        for field, field_cfg in self.cfg.items():
+            str_list.append(field)
+            for key, val in field_cfg.cfg.items():
+                str_list.append(f"\t{key} : {val}")
+        return "\n".join(str_list)

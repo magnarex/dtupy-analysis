@@ -15,3 +15,12 @@ dev/dqm/models
 src/hep_utils
 test
 docs
+batch/logs
+batch/jobs
+batch/scripts
+dumps
+**/condorExecutable.sh
+**/condorSubmit.sub
+.python_history
+.bash_history
+.Xauthority

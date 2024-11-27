@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Translate a file from lines of bytes to a tabular format (.parquet).
 """
@@ -21,14 +22,13 @@ parser.add_argument('--lang', '-l'  ,
 )
 parser.add_argument('--cfg'         ,
     dest        = 'cfg_path'        ,
-    required    = True              ,
+    default     = None              ,
     help        = 'configuration file (.yaml) that will be used for the translation.'
 )
 parser.add_argument('--buffer-size' ,
     dest        = 'buffer_size'     ,
     default     = 1e5               ,
     help        = 'maximum size for the buffer (in lines). By default, 1e5.'
-
 )
 parser.add_argument('--debug'       ,
     dest        = 'debug'           ,
@@ -64,8 +64,9 @@ from dtupy_analysis.daq import Translator
 
 
 # Running the translator
-if   args.language.lower() == 'it': transr = Translator.from_it(args.cfg_path)
-elif args.language.lower() == 'la': transr = Translator.from_la(args.cfg_path)
+if   (args.language.lower() == 'it') and (args.cfg_path is not None): transr = Translator.from_it(args.cfg_path)
+elif (args.language.lower() == 'la') and (args.cfg_path is not None): transr = Translator.from_la(args.cfg_path)
+elif (args.language.lower() == 'es') and (args.cfg_path is     None): transr = Translator.from_es()
 else: raise ValueError(f"No language with this id ('{args.language.lower()}') has been configured in the script.")
 
 

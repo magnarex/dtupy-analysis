@@ -84,7 +84,8 @@ class Language(object):
     # =================================
     def translate(
             self,
-            word    : 'int | bytes'
+            word    : 'int | bytes',
+            dictionary : 'dict[str, (int, int)]' = None
         ) -> Iterable:
         """
         This function reads a word and returns a dictionary of the fields codified
@@ -100,7 +101,9 @@ class Language(object):
         fields : dict[field name] : field value
             Dictionary with the value of every field as read from `word`.
         """
-        return {field_name : Language.parse(word, *field) for field_name, field in self.fields.items()}
+        
+        if dictionary is None: dictionary = self.fields
+        return {field_name : Language.parse(word, *field) for field_name, field in dictionary.items()}
 
     # =================================
     # STATIC METHODS
@@ -206,3 +209,74 @@ class Italian(Language):
     
     def __init__(self):
         super().__init__('it', Italian._default_fields, Italian._default_schema)
+
+class Spanish(Language):
+    """
+    Sub-class of ``Language`` that has the following fields:
+    
+    =========== =========== =============== ===========
+    Field       Type        Position        Mask        
+    ----------- ----------- --------------- -----------
+    obdt_ch     ``uint8``   0               0xFF      
+    obdt_bx     ``uint16``  8               0xFFF               
+    obdt_tdc    ``uint8``   20              0b11111 
+    valid       ``bool``    25              0b1
+    bx          ``uint16``  26              0xFFF
+    tdc         ``uint8``   38              0b11111
+    wheel       ``int8``    43              0b111
+    sector      ``int8``    46              0b1111
+    station     ``int8``    50              0b11
+    sl          ``uint8``   52              0b11
+    layer       ``uint8``   54              0b11
+    cell        ``uint8``   56              0b1111111
+    valid_ro    ``bool``    63              0b1
+    valid_trig  ``bool``    64              0b1
+    =========== =========== =============== =========
+    """
+    
+    _default_fields = {
+        'obdt_ch'   : (0xFF,       0),    # CHANNEL
+        'obdt_bx'   : (0xFFF,      8),    # BX
+        'obdt_tdc'  : (0b11111,   20),    # TDC
+        'valid'     : (0b1,       25),    # VALID
+        'bx'        : (0xFFF,     26),    # BX_EXT
+        'tdc'       : (0b11111,   38),    # TDC_EXT
+        'wheel'     : (0b111,     43),    # WHEEL
+        'sector'    : (0xF,       46),    # SECTOR
+        'station'   : (0b11,      50),    # STATION
+        'sl'        : (0b11,      52),    # SL
+        'layer'     : (0b11,      54),    # LAYER
+        'cell'      : (0b1111111, 56),    # CELL
+        'valid_ro'  : (0b1,       63),    # VALID_RO
+        'valid_trig': (0b1,       64),    # VALID_TRIG
+    }
+    _default_schema = {
+        'time'      : 'float64'         , # TIME
+        'ts_cc'     : 'uint8'           , # TS_CC
+        'ts_bx'     : 'uint16'          , # TS_BX
+        'ts_oc'     : 'uint16'          , # TS_OC
+        'obdt_ch'   : 'uint8'           , # CHANNEL
+        'obdt_bx'   : 'uint16'          , # BX
+        'obdt_tdc'  : 'uint8'           , # TDC
+        'valid'     : 'uint8'           , # VALID
+        'bx'        : 'uint16'          , # BX_EXT
+        'tdc'       : 'uint8'           , # TDC_EXT
+        'wheel'     : 'int8'            , # WHEEL
+        'sector'    : 'int8'            , # SECTOR
+        'station'   : 'int8'            , # STATION
+        'sl'        : 'uint8'           , # SL
+        'layer'     : 'uint8'           , # LAYER
+        'cell'      : 'uint8'           , # CELL
+        'valid_ro'  : 'uint8'           , # VALID_RO
+        'valid_trig': 'uint8'           , # VALID_TRIG
+    }
+    def __init__(self):
+        super().__init__('es', Spanish._default_fields, Spanish._default_schema)
+
+    def timestamp(self, word):
+        ts_dict = {
+            'ts_cc' : (0xF,     0),
+            'ts_bx' : (0xFFF,   4),
+            'ts_oc' : (0xFFF,  16),
+        }
+        return self.translate(word, ts_dict)

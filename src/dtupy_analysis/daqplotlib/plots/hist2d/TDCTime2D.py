@@ -96,10 +96,13 @@ class TDCTime2D(Hist2D):
         kwargs['cms_pad'] = 0.05
         if 'cms_rlabel' in kwargs.keys():
             cms_rlabel = kwargs.pop('cms_rlabel')
+
+        kwargs['figsize'] = [12,10]
+        
         
         super().__init__(*args, **kwargs)
         
-        self.fig.suptitle(cms_rlabel, y = 0.96, x=0.95, ha = 'right', style = 'italic')
+        self.fig.text(s=cms_rlabel, y = 0.95, x=0.95, ha = 'right', style = 'italic')
     
     def plot(self, var, bx_centre = None, bx_window = 5, **kwargs):
         """
@@ -180,3 +183,5 @@ class TDCTime2D(Hist2D):
         # Set axis labels
         self.ax.set_xlabel('TDC time (arb. units.)')
         self.ax.set_ylabel(self.plot_cfg[var].label.format(var=var))
+
+        plt.tight_layout()

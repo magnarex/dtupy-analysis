@@ -28,9 +28,11 @@ from .Plot                  import Plot, CMSPlot
 from .hist2d.Hist2D         import Hist2D
 from .hist2d.TDCTime2D      import TDCTime2D
 from .hist2d.BX2D           import BX2D
+from .hist2d.PattLats2D     import PattLats2D
 
 # plt.bar
 from .bar.TDCstd_vs_ch      import TDCstd_vs_ch
 
 # plt.hist
 from .hist.Hist             import Hist
+from .hist.HistByPatt       import HistByPatt

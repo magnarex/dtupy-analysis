@@ -27,3 +27,6 @@ Module
 =========== ===========================================
 
 """
+
+from . import plots
+from . import config

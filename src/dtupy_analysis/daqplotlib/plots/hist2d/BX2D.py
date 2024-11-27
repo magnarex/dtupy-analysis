@@ -129,6 +129,8 @@ class BX2D(Hist2D):
         self.var = var
         bx_range = self.plot_cfg['bx']['range']
         
+        log_c = kwargs.pop('log_c', True)
+        
         bx_bins  = np.arange(bx_range[0], bx_range[1]+1,bin_width)
         if bx_bins[-1] >= bx_range[1]:
             bx_bins[-1] = bx_range[1]
@@ -138,12 +140,11 @@ class BX2D(Hist2D):
         super().plot('bx', var,
                          range = [bx_range, None],
                          bins  = [bx_bins , None],
-                         log_c = True,
+                         log_c = log_c,
                          **kwargs
                         )
         
         # self.fig.tight_layout()
-        self.fig.subplots_adjust(left=0.1,right=1, wspace=-2)
         self.ax.margins(x=0, tight=True)
         self.fig.get_axes()[-1].margins(x=0, tight=True)
         
@@ -154,7 +155,8 @@ class BX2D(Hist2D):
         # Set axis labels
         self.ax.set_xlabel('Bunch crossing (arb. units.)')
         self.ax.set_ylabel(self.plot_cfg[var].label.format(var=var))
-            
+        
+        plt.tight_layout()
         
     def inspect_bx(self, savefig = None, bx_window = 5, threshold = 0.05):
         """
@@ -193,7 +195,6 @@ class BX2D(Hist2D):
                         # Make figures subfolder
                         fig_path = savefig.with_stem(f'{path.stem}_bx').with_suffix('')
                         fig_path.mkdir(parents=True, exist_ok=True)
-                        
                         bx_plot.fig.savefig(fig_path / Path(f'{path.stem}_bx{bx}{path.suffix}'))
                 
                 # This needs some fixing

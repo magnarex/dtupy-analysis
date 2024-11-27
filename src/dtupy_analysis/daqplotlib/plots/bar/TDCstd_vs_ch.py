@@ -47,7 +47,9 @@ class TDCstd_vs_ch(CMSPlot):
             
         self.ax.set_xlim(std_by_ch.index.min(), std_by_ch.index.max())
         self.ax.set_xlabel('Channel')
-        self.ax.set_ylabel('Width of TDC distribution, $\sigma (TDC)$ (arb. units.)')
+        self.ax.set_ylabel(r'Width of TDC distribution, $\sigma (TDC)$ (arb. units.)')
+        
+        plt.tight_layout()
         
         plt.legend()
 

@@ -1,10 +1,12 @@
 from typing import Any
+from pathlib import Path
 
 import matplotlib        as mpl; mpl.use('Agg')
 import matplotlib.pyplot as plt
 import mplhep            as hep
 import pandas
 
+from dtupy_analysis.utils.paths import config_directory
 from dtupy_analysis.utils.docs import is_documented_by
 from ..config import PlotConfig
 
@@ -17,7 +19,7 @@ class Plot:
     def __init__(self,
             data,
             *args,
-            plot_cfg = PlotConfig({}),
+            plot_cfg = None,
             figsize  = None,
             label_fs = 25,
             tick_pad = 10,
@@ -49,18 +51,24 @@ class Plot:
             Distance in points between tick and label. Inhereted from matplotlib.
             
         """
-        self._fig, self._ax = plt.subplots(1,1, figsize=figsize)
+        self.init_figure(figsize=figsize)
+
         self._data = data
         self._args = args
         self._kwargs = kwargs
-        self._plot_cfg = plot_cfg
+        if plot_cfg is None:
+            self._plot_cfg = PlotConfig.from_yaml("default")
+        else:
+            self._plot_cfg = plot_cfg
         
         # Default ax params
         self.ax.tick_params(axis='both', which='major', pad=tick_pad)
         self.ax.set_xlabel(self.ax.get_xlabel(), fontsize = label_fs)
         self.ax.set_ylabel(self.ax.get_ylabel(), fontsize = label_fs)
+        plt.tight_layout()
 
-        
+    def init_figure(self, figsize = None):
+        self._fig, self._ax = plt.subplots(1,1, figsize=figsize)
         
     def __enter__(self):
         """
@@ -146,7 +154,7 @@ class CMSPlot(Plot):
     def __init__(self,
             data,
             *args,
-            plot_cfg = PlotConfig({}),
+            plot_cfg = None,
             label_fs = 25,
             tick_pad = 10,
             cms_label = 'Private Work',
@@ -208,6 +216,25 @@ class CMSPlot(Plot):
             are not plot styling, will be passed to `plot`.
         """
         hep.style.use("CMS")
+        
+        # Define 10-color scheme as sugested in:
+        # https://cms-analysis.docs.cern.ch/guidelines/plotting/colors/#categorical-data-eg-1d-stackplots
+        from cycler import cycler
+        mpl.rcParams['axes.prop_cycle'] = cycler('color',
+            ['#3f90da',
+             '#ffa90e',
+             '#bd1f01',
+             '#94a4a2',
+             '#832db6',
+             '#a96b59',
+             '#e76300',
+             '#b9ac70',
+             '#717581',
+             '#92dadd']
+        )
+        
+        
+        
         super().__init__(
             data,
             *args,
@@ -222,12 +249,11 @@ class CMSPlot(Plot):
             cms_loc    = cms_loc                                        ,
             cms_data   = cms_data                                       ,
             cms_rlabel = cms_rlabel                                     ,
-            cms_exp    = ('CMS' if not cms_exp else 'CMS ' + cms_exp)   ,
+            cms_exp    = ('CMS' if (not cms_exp) else cms_exp if ('CMS' in cms_exp) else 'CMS ' + cms_exp)   ,
             cms_pad    = cms_pad                                        ,
         )
         
-        hep.cms.label(**{key[4:] : value for (key, value) in self.cms_kwargs.items()}) 
-          
+        hep.cms.label(**{key[4:] : value for (key, value) in self.cms_kwargs.items()}, ax=self.ax) 
     @property
     def cms_kwargs(self) -> dict[str, Any]:
         """

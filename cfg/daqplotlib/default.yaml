@@ -46,3 +46,16 @@ obdt_ctr:
   bins  : 15
   range : [0, 15]
   label : OBDT connector, {var}
+
+theta:
+  bins  : 100
+  range : [-1.570796, 1.570796] # [-pi/2, pi/2]
+  label : "Incidence angle, theta (rad)"
+
+x0:
+  bins  : 96       # (ncells + 1) * 5
+  range : [0, 714] # [0, (ncells + 1)*u.CELL_WIDTH]
+  label : "Position at half SL (L2-L3), x0 (mm)"
+
+chi2:
+  bins : 2

@@ -60,7 +60,8 @@ def get_file(path, default_dir = None, suffix = None, debug=False):
             path = get_with_default(path.with_suffix(sfx_i), default_dir,debug=debug)
             if path.exists(): return path
             
-        raise ValueError(f"Can't find a file with name {path} and extension in {suffix}!")
+        raise FileNotFoundError(f"Can't find a file with name {path} and extension in {suffix}!")
+
 
 
 
@@ -71,7 +72,7 @@ def get_yaml(path, default_dir = None):
 def get_root(path, default_dir = None):
     return get_file(path,default_dir,'.root') 
 
-def load_yaml(path, default_dir = None) -> dict[str, Any]:
+def load_yaml(path, default_dir = None) -> 'dict[str, Any]':
     """Read .yaml file and import it as a dictionary.
     """
     path = get_yaml(path, default_dir)

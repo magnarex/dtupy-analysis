@@ -119,8 +119,8 @@ class Hist(CMSPlot):
         log     = kwargs.pop('log'  , hist_cfg.get('log'  , False)                      )
         label   = kwargs.pop('label', hist_cfg.get('label', 'var') if var is None else \
                                       hist_cfg.get('label', '{var}')                    )        
-
-        step = np.abs(np.diff(range)/bins).astype(int)[0]
+        
+        step = np.abs(range[1] - range[0])/bins
         mids = np.arange(*range, step)
         
         cts, edges, _ = self.ax.hist(df,
@@ -139,4 +139,6 @@ class Hist(CMSPlot):
         
         self.ax.set_xlabel(label.format(var=var) if not (var is None) else label)
         self.ax.set_ylabel('Events')
+        
+        plt.tight_layout()
 

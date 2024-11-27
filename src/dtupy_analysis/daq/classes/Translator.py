@@ -133,10 +133,10 @@ class Translator(object):
             self._pqwriter = pq.ParquetWriter(self.output_path, self._schema)
         
         if _do_bar:
-            with open(src_path, 'r' + 'b' if binary_file else '') as file, alive_bar() as bar:
+            with open(src_path, 'r' + 'b' if binary_file else 'r') as file, alive_bar() as bar:
                 self._main_loop(file,max_buffer=max_buffer, bar=bar, debug = debug, verbose=verbose)
         else:
-            with open(src_path, 'r' + 'b' if binary_file else '') as file:
+            with open(src_path, 'r' + 'b' if binary_file else 'r') as file:
                 self._main_loop(file,max_buffer=max_buffer, debug = debug, verbose=verbose)
         
         print('\nLines processed: {read:10d} / {total:<10d} ({ratio:6.2f}%)'.format(

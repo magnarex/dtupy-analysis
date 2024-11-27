@@ -15,9 +15,10 @@ parser.add_argument('src_path'      ,
 parser.add_argument('out_path'      , 
     help        = 'output file that will have table format (.parquet).'
 )
-parser.add_argument('--lang', '-l'  , 
+parser.add_argument('-l'  , 
     dest        = 'language'        ,
     required    = True              ,
+    choices     = ['it', 'la', 'es'],
     help        = 'language from which the input file will be translate.'
 )
 parser.add_argument('--cfg'         ,

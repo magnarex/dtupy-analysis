@@ -66,11 +66,11 @@ By default, this resolves to `figs`. A new folder with the name of the data file
 ### Example
 This example takes uses the data produced in the previous example for `translate.py` in Italian.
 ```bash
-python plot.py examples/data/cosmic examples/figs
+python scripts/daq/plot.py examples/data/cosmic examples/figs
 ```
 
 
 This example takes uses the data produced in the previous example for `translate.py` in Spanish.
 ```bash
-python plot.py examples/data/dtupy examples/figs --cfg dtupy
+python scripts/daq/plot.py examples/data/dtupy examples/figs --cfg dtupy
 ```

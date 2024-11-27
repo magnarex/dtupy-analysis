@@ -26,3 +26,4 @@ dumps
 **/__pycache__
 **/__deprecated
 **/legacy
+examples/**/*.parquet

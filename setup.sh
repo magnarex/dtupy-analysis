@@ -19,3 +19,18 @@ else
     ln -sfn "$target" "$link"
     echo "  Done!"
 fi
+
+# Create the conda env only if --no-conda is not provided
+if [[ ! " $@ " =~ " --no-conda " ]]; then
+    echo "Creating conda environment..."
+    conda env create -f "$script_dir/environment.yml"
+else
+    echo "Skipping conda environment creation due to --no-conda option."
+fi
+
+if [[ ":$PYTHONPATH:" != *":$script_dir/src:"* ]]; then
+    echo "Adding $script_dir/src to PYTHONPATH..."
+    export PYTHONPATH="$script_dir/src:$PYTHONPATH"
+else
+    echo "$script_dir/src is already in PYTHONPATH."
+fi

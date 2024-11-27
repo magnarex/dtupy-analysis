@@ -1,0 +1,44 @@
+tdc:
+  bins  : 32
+  range : [0, 32]
+  label : TDC, {var} (arb. uts.)
+
+bx:
+  bins    : 3556
+  range   : [0, 3556]
+  label   : Bunch crossing, {var} (arb. uts.)
+  log     : true
+
+layer:
+  bins  : 4
+  range : [1, 5]
+  label : Layer, {var}
+
+station:
+  label : Station, {var}
+
+cell:
+  bins  : 52
+  range : [0, 52]
+  label : Cell, {var}
+
+obdt_ch:
+  bins  : 256
+  range : [0, 256]
+  label : Channel, {var}
+
+sl:
+  bins  : 4
+  range : [1, 5]
+  label : Superlayer, {var}
+
+theta:
+  bins  : 100
+  range : [-1.570796, 1.570796] # [-pi/2, pi/2]
+  label : "Incidence angle, {var} (rad)"
+
+x0:
+  bins  : 96       # (ncells + 1) * 5
+  range : [0, 714] # [0, (ncells + 1)*u.CELL_WIDTH]
+  label : "Position at half SL (L2-L3), {var} (mm)"
+

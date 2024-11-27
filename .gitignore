@@ -1,4 +1,5 @@
 .vscode
+.venv
 figs
 logs
 data
@@ -12,4 +13,16 @@ src/hep_utils
 dev
 demo
 test
-src/muTel/dqm
+docs
+batch/logs
+batch/jobs
+batch/scripts
+dumps
+**/condorExecutable.sh
+**/condorSubmit.sub
+.python_history
+.bash_history
+.Xauthority
+**/__pycache__
+**/__deprecated
+**/legacy

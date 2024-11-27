@@ -29,8 +29,30 @@ python translate.py /afs/cern.ch/user/r/redondo/work/public/sxa5/testpulse_theta
     -l it\
     --cfg testpulse_theta_2
 ```
+
 This example takes the data taken with the slow control box test shared by Ignacio in `/afs/cern.ch/user/r/redondo/work/public/sxa5/testpulse_theta_2.txt` with an OBDT configured in the file `.../cfg/mapping/testpulse_theta_2.yaml` and translates from `it` (Italian) and stores the tabular dataset in `.../data/test.parquet`.
 
 > ### Tip: Partial translation!
 > The program may be exited at any point of the loop raising a `KeyboardInterrupt` excpection (i.e., pressing `Ctrl+C`). This will be handled properly and the file will be saved up to the point of the interruption. This is useful if one wants to produce a partial translation on a reduced portion of the data.
 
+## plot.py
+
+This script takes the following arguments:
+
+- **src_path**: path to the data file that will be used to draw the plots. 
+By default, the parser will first check `.../data/{src_path}` (in case the `src_path` has no suffix, the parser will look for `{src}.parquet` instead). If this path doesn't exist, it will check `{src}`.
+
+    > For example `file` will parse to `.../data/file.parquet` (or `file.parquet` if the previous path doesn't exist) and `.../dir/file` will parse to `.../dir/file.parquet`.
+
+- **fig_dir**: directory where to save the drawn plots.
+By default, this resolves to `.../figs`. A new folder with the name of the data file will be created under this directory to store all the generated plots.
+
+- **--cfg**: path to the configuration file that will be used in the plotting. This file must have a given format, similar to the `.yaml` files that may be found under `.../cfg/daq`. By default, the parser will first check `.../cfg/daq/{cfg}.yaml` if it doesn't exist, it will check `{cfg}`. Default is `.../cfg/default.yaml`
+
+
+### Example
+```bash
+python plot.py test
+```
+
+This example takes uses the data produced in the previous example for `translate.py`.

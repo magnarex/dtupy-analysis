@@ -1,0 +1,64 @@
+LLL:
+  int: -4
+  id:  -D
+  lats:
+  - RRRR
+  - LLLL
+  - RRLL
+  - LLRR
+  - RRRL
+  - LLLR
+LLR:
+  int: -3
+  id:  -C
+  lats:
+  - RRRL
+  - LRRL
+  - LLRL
+LRL:
+  int: -1
+  id:  -A
+  lats:
+  - RRLR
+  - LRLR
+  - RRLL
+  - LRLL
+LRR:
+  int: -2
+  id: -B
+  lats:
+  - LRRR
+  - LRRL
+  - LRLL
+RLL:
+  int: 2
+  id: +B
+  lats:
+  - RLLL
+  - RLLR
+  - RLRR
+RLR:
+  int: 1
+  id: +A
+  lats:
+  - LLRL
+  - RLRL
+  - LLRR
+  - RLRR
+RRL:
+  int: 3
+  id: +C
+  lats:
+  - LLLR
+  - RLLR
+  - RRLR
+RRR:
+  int: 4
+  id: +D
+  lats:
+  - LLLL
+  - RRRR
+  - LLRR
+  - RRLL
+  - LLLR
+  - RRRL

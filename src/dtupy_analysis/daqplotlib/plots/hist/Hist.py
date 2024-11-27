@@ -114,7 +114,6 @@ class Hist(CMSPlot):
             df : pandas.Series = self.data[var]
             hist_cfg = self.plot_cfg[var]
         
-        
         bins    = kwargs.pop('bins' , hist_cfg.get('bins' , len(df.unique()))           )
         range   = kwargs.pop('range', hist_cfg.get('range', (df.min(), df.max()+1))     )
         log     = kwargs.pop('log'  , hist_cfg.get('log'  , False)                      )
@@ -142,5 +141,4 @@ class Hist(CMSPlot):
         self.ax.set_ylabel('Events')
         
         plt.tight_layout()
-
 

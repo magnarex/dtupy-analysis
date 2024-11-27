@@ -144,6 +144,7 @@ class Hist2D(CMSPlot):
             if range[1] is None: range[1] = self.plot_cfg[var_y].get('range', None)
             if bins [1] is None: bins [1] = self.plot_cfg[var_y].get('bins' , None)
             if ylabel   is None: ylabel   = self.plot_cfg[var_y].get('label', None)
+
         else:
             hy_data  = var_y
 

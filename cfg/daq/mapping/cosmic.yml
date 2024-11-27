@@ -84,19 +84,3 @@ connectors:
     jin3b : [1, 1, '1B']
     jin4a : [1, 1, '2A']
     jin4b : [1, 1, '2B']
-
-
-
-# links:
-#   14 : phi
-
-# connectors:
-#   14 :
-#     jin1 : [1, 2, '1A']
-#     jin2 : [1, 2, '1B']
-#     jin3 : [1, 2, '2A']
-#     jin4 : [1, 2, '2B']
-#     jin5 : [1, 1, '1A']
-#     jin6 : [1, 1, '1B']
-#     jin7 : [1, 1, '2A']
-#     jin8 : [1, 1, '2B']

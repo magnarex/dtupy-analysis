@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below :)"
+authors:
+- family-names: "Alcalde Martínez"
+  given-names: "Martín"
+  orcid: "https://orcid.org/0000-0002-4717-5743"
+title: "CMS DT Upgrade Analysis toolkit"
+version: 0.1
+date-released: 2024-06-02
+url: "https://github.com/magnarex/dtupy-analysis"

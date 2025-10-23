@@ -1,7 +1,7 @@
 name: dtupy-analysis
 channels:
-  - defaults
   - conda-forge
+  - defaults
 dependencies:
   - alive-progress=3.1.5
   - matplotlib-base=3.9.2
@@ -12,3 +12,7 @@ dependencies:
   - scipy=1.13.1
   - termcolor=2.1.0
   - tqdm=4.66.5
+  - pyarrow
+  - pyyaml
+  - mplhep
+  - dask
